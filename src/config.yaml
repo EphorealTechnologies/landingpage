@@ -1,24 +1,23 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: Ephoreal Technologies
+  site: 'https://ephoreal.com'
   base: '/'
   trailingSlash: false
-
-  googleSiteVerificationId: orcPxI47GSa-cRvY11tUe6iGg2IO_RPvnA1q95iEM3M
+  googleSiteVerificationId: ms8BM1dc_nhYLr1GQ5mThc3wI1LzwarK3uA7Is5RuL8
 
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
+    default: Ephoreal
+    template: '%s — Ephoreal'
   description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: AstroWind
+    site_name: Ephoreal
     images:
-      - url: '~/assets/images/default.png'
+      - url: '~/assets/images/logo.svg'
         width: 1200
         height: 628
     type: website
@@ -66,7 +65,7 @@ apps:
 analytics:
   vendors:
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
+      id: "G-NGXCGRNY9J"
 
 ui:
   theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
