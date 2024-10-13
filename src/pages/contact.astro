@@ -1,7 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
-import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
@@ -11,37 +10,69 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <!-- HeroText Widget ******************* -->
+  <HeroText tagline="Let's Chat" title="" subtitle= ""/>
 
-  <HeroText tagline="Contact" title="Let's Connect! <br> Book a call today!" />
-  <!-- Calendly inline widget begin -->
-  <div class="calendly-inline-widget" data-url="https://calendly.com/tim22442244/30min" style="min-width:320px;height:700px;"></div>
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  <!-- Calendly inline widget end -->
+  <!-- Contact Us Button for the Popup -->
+  <div class="text-center mt-8">
+    <button
+      id="cta-button"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >Contact Us Form
+    </button>
+  </div>
+  <!-- Popup for HubSpot form -->
+    <div
+    id="hubspot-form-popup"
+    class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50"
+    >
+    <!-- Fixed form size -->
+    <div 
+      class="bg-white rounded-lg p-8 shadow-lg relative"
+      style="width: 700px; height: 580px;"  
+    >
+    <!-- Close Button -->
+    <button
+      class="absolute top-0 right-0 m-4 text-gray-700 hover:text-gray-900"
+      onclick="document.getElementById('hubspot-form-popup').classList.add('hidden')"
+    >
+      &#10005; <!-- X symbol for closing -->
+    </button>
+    
+    <!-- HubSpot form container -->
+    <div id="hubspotFormContainer" class="text-base"></div>
+  </div>
+</div>
 
-  <ContactUs
-    id="form"
-    title="Send us a message!"
-    subtitle=""
-    inputs={[
-      {
-        type: 'text',
-        name: 'name',
-        label: 'Name',
-      },
-      {
-        type: 'email',
-        name: 'email',
-        label: 'Company Email',
-      },
-    ]}
-    textarea={{
-      label: 'Message',
-    }}
-    disclaimer={{
-      label:
-        'By submitting this contact form, you acknowledge and agree to the collection of your personal information.',
-    }}
-    description="Our support team typically responds within 24 business hours."
-  />
 
-  </Layout>
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) { 
+      const cta = document.getElementById("cta-button");
+      const formEmbed = document.createElement("div");
+      formEmbed.id = "hubspotForm";
+      formEmbed.innerHTML = "";  // HubSpot form will be injected here
+      document.getElementById("hubspotFormContainer").appendChild(formEmbed);
+
+      // Event listener to open popup and inject HubSpot form
+      cta.addEventListener("click", function(event) {
+        event.preventDefault();
+        document.getElementById('hubspot-form-popup').classList.remove('hidden');
+
+        if (!document.getElementById('hubspotForm').innerHTML.trim()) {
+          // HubSpot form embed code
+          hbspt.forms.create({
+            region: "na1",
+            portalId: "47705130",
+            formId: "09b2019a-aa55-41e4-9fe4-85eb2a955c78",
+            target: "#hubspotForm"
+          });
+        }
+      });
+    });
+  </script>
+
+  <!-- HubSpot embed script -->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  <br>
+  <br>
+  <br>
+</Layout>
