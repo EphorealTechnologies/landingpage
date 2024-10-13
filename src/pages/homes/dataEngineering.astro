@@ -1,0 +1,159 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Image from '~/components/common/Image.astro';
+const dataEngineeringImage = "~/assets/images/dataEngineeringImage.jpg";
+const metadata = {
+  title: 'Data Engineering Services for Businesses',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    tagline="Transform Your Business with Data Engineering"
+  >
+    <Fragment slot="title">
+      Unlock the Power of <span class="hidden sm:inline">Data</span> <span
+        class="text-accent dark:text-white highlight">Engineering</span
+      > for Business Growth
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Leverage cutting-edge data engineering solutions to drive efficiency, scalability, and actionable insights for your industry.
+    </Fragment>
+
+    <Fragment slot="image">
+      <Image src={dataEngineeringImage} alt="Data Engineering in Business" class="mx-auto max-w-full" />
+    </Fragment>
+  </Hero>
+
+  <!-- Features Widget *************** -->
+
+  <Features
+    id="features"
+    title="Our Comprehensive Data Engineering Services"
+    subtitle="Empower your business with robust and scalable data engineering solutions."
+    columns={2}
+    items={[
+      {
+        title: 'Data Pipeline Automation',
+        description: 'Automate your data pipelines for continuous, real-time data processing, ensuring 99% data accuracy. <a class="underline ..." href="https://www.forbes.com/sites/bernardmarr/2021/05/03/how-to-successfully-build-a-modern-data-pipeline/" target="_blank">[Source: Forbes]</a>',
+        icon: 'tabler:database-cog',
+      },
+      {
+        title: 'Data Warehousing & Architecture',
+        description: 'Build scalable data warehouses and architecture to handle large volumes of data, reducing query times by up to 80%. <a class="underline ..." href="https://aws.amazon.com/data-warehousing/" target="_blank">[Source: AWS]</a>',
+        icon: 'tabler:database',
+      },
+      {
+        title: 'ETL/ELT Processes', 
+        description: 'Efficiently extract, transform, and load data, ensuring seamless integration between disparate systems, reducing data processing time by up to 50%. <a class="underline ..." href="https://www.datamation.com/big-data/etl-tools/" target="_blank">[Source: Datamation]</a>',
+        icon: 'tabler:arrows-shuffle',
+      },
+      {
+        title: 'Data Governance & Compliance',
+        description: 'Ensure your data meets regulatory compliance with data governance frameworks, enhancing security and reducing risks by 40%. <a class="underline ..." href="https://www.gartner.com/en/documents/3888317/the-state-of-data-governance-and-management-in-2021" target="_blank">[Source: Gartner]</a>',
+        icon: 'tabler:shield-lock',
+      },
+      {
+        title: 'Cloud Data Solutions',
+        description: 'Optimize your data storage and analytics with cloud-based solutions, improving data accessibility and reducing infrastructure costs by 30%. <a class="underline ..." href="https://www.accenture.com/us-en/services/cloud/cloud-data" target="_blank">[Source: Accenture]</a>',
+        icon: 'tabler:cloud-upload',
+      },
+      {
+        title: 'Big Data Processing',
+        description: 'Leverage big data technologies to process and analyze massive datasets in real-time, improving decision-making by 25%. <a class="underline ..." href="https://www.ibm.com/topics/big-data-processing" target="_blank">[Source: IBM]</a>',
+        icon: 'tabler:brand-databricks',
+      },
+      {
+        title: 'Data Security & Encryption',
+        description: 'Protect your data assets with advanced encryption and security measures, reducing data breaches by 85%. <a class="underline ..." href="https://www.csoonline.com/article/3235564/what-is-encryption-how-it-protects-your-data.html" target="_blank">[Source: CSO Online]</a>',
+        icon: 'tabler:lock',
+      },
+      {
+        title: 'Real-Time Data Streaming',
+        description: 'Enable real-time data insights with streaming technologies, allowing your business to act on data instantly, boosting operational efficiency by 40%. <a class="underline ..." href="https://www.confluent.io/what-is-real-time-data-streaming/" target="_blank">[Source: Confluent]</a>',
+        icon: 'tabler:timeline',
+      },
+    ]}
+  />
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title="The Impact of Data Engineering"
+    subtitle="Key metrics that demonstrate the effectiveness of our data engineering solutions."
+    stats={[
+      { title: 'Data Accuracy', amount: '99%' },
+      { title: 'Query Time Reduction', amount: '80%' },
+      { title: 'Data Processing Efficiency', amount: '50%' },
+      { title: 'Data Security Improvement', amount: '85%' },
+      { title: 'Operational Efficiency', amount: '40%' },
+      { title: 'Infrastructure Cost Savings', amount: '30%' },
+    ]}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="Frequently Asked Questions"
+    items={[
+      {
+        title: 'What is data engineering?',
+        description:
+          'Data engineering involves designing and developing systems for collecting, storing, and analyzing data at scale, ensuring the data is ready for analytics or machine learning.',
+      },
+      {
+        title: 'Why is data pipeline automation important?',
+        description:
+          'Automated data pipelines streamline data flow, allowing for continuous processing, monitoring, and management of data, which ensures real-time accuracy and availability.',
+      },
+      {
+        title: 'How do cloud data solutions benefit my business?',
+        description:
+          'Cloud data solutions improve scalability, reduce costs, and increase data accessibility, enabling businesses to easily manage and analyze large datasets without extensive infrastructure.',
+      },
+      {
+        title: 'How does data engineering improve security?',
+        description:
+          'By implementing data governance, encryption, and security protocols, data engineering helps reduce the risk of data breaches and ensures compliance with regulations.',
+      },
+      {
+        title: 'What is the pricing?',
+        description:
+          'We offer tailored pricing based on your project requirements, starting from $100/month. Please contact us for a personalized quote.',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-gray-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Get Started',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready to Transform Your Data?</Fragment>
+
+    <Fragment slot="subtitle">
+      Contact us today to learn how our data engineering solutions can enhance your business operations.
+    </Fragment>
+
+  </CallToAction>
+</Layout>

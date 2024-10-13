@@ -7,7 +7,7 @@ export const headerData = {
       href: getPermalink('/'),
      
     },
-    {
+    { 
       text: 'Services',
       links: [
         {
@@ -20,11 +20,11 @@ export const headerData = {
         },
         {
           text: 'Data Engineering',
-          href: getPermalink('/homes/DataEngineering'),
+          href: getPermalink('/homes/dataEngineering'),
         },
         {
           text: 'Custom Machine Learning',
-          href: getPermalink('/homes/ML'),
+          href: getPermalink('/homes/dataScience'),
         },
         {
           text: 'Computer Vision',
@@ -60,8 +60,8 @@ export const headerData = {
           href: getPermalink('/homes/banking_finance'),
         },
         {
-          text: 'Computer Vision',
-          href: getPermalink('/homes/Marketing'),
+          text: 'Logistics and supply chain',
+          href: getPermalink('/homes/logistics_supplychain'),
         },
       ],
     },
@@ -90,8 +90,8 @@ export const footerData = {
       links: [
         { text: 'Strategic consult', href: '/homes/Consult' },
         { text: 'GenAI', href: '/homes/GenAI' },
-        { text: 'Data Engineering', href: '/homes/DataEngineering' },
-        { text: 'Custom Machine Learning', href: '/homes/ML' },
+        { text: 'Data Engineering', href: '/homes/dataEngineering' },
+        { text: 'Custom Machine Learning', href: '/homes/dataScience' },
         { text: 'Computer Vision', href: '/homes/ComputerVision' },
         { text: 'IOT', href: '/homes/IOT' },
         { text: 'MLOPS', href: '/homes/MLOPS' },
@@ -110,7 +110,7 @@ export const footerData = {
     {
       title: 'Contact Us',
       links: [
-        { text: 'Email:contact@ephoreal.com', href: 'mailto:contact@ephoreal.com' },
+        { text: 'Email: info@ephoreal.com', href: 'mailto:contact@ephoreal.com' },
         { text: 'Book a meeting', href: getPermalink('/contact') },
         { text: 'Address: 2nd floor, 14, Rajaji Street, Sudhana Nagar, Nainarmandapam, Puducherry, India-605004'},
         // { text: 'Skills', href: '#' },
@@ -141,7 +141,7 @@ export const footerData = {
     { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/EphorealTechnologies' },
   ],
   footNote: `
-    <img class="w-5 h-5 md:w-6 md:h-6 md:-mt-0.5 bg-cover mr-1.5 rtl:mr-0 rtl:ml-1.5 float-left rtl:float-right rounded-sm" src="src/assets/images/logo.svg" alt="onWidget logo" loading="lazy"></img>
+    <img class="w-5 h-5 md:w-6 md:h-6 md:-mt-0.5 bg-cover mr-1.5 rtl:mr-0 rtl:ml-1.5 float-left rtl:float-right rounded-sm" src="https://res.cloudinary.com/dgpcn8e7x/image/upload/v1728810916/Logo_hlpksp.svg"  alt="onWidget logo" loading="lazy"></img>
     ©2024 by Ephoreal Technologies. All Rights Reserved.
   `,
 };

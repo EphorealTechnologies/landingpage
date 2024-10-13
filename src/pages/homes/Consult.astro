@@ -1,0 +1,125 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Image from '~/components/common/Image.astro';
+const consultingImage = "~/assets/images/strategicConsulting.jpg";
+const metadata = {
+  title: 'Strategic Consulting for Data and AI',
+};
+---
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+  <Hero
+    tagline="Unlock Industry Innovation with Strategic Technology Consulting"
+  >
+    <Fragment slot="title">
+      Elevate Your <span class="hidden sm:inline">Business</span> with <span class="text-accent dark:text-white highlight">Data & AI</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      Using the foundations of opensource technologies, we help industries optimize processes, reduce inefficiencies, and fuel growth through data-driven strategies.
+    </Fragment>
+    <Fragment slot="image">
+      <Image src={consultingImage} alt="Strategic Consulting" class="mx-auto max-w-full" />
+    </Fragment>
+  </Hero>
+
+  <!-- Features Widget *************** -->
+  <Features
+    id="features"
+    title="Our Comprehensive Strategic Consulting Services"
+    subtitle="Expert Guidance Across Data Engineering, MLOps, AI, and IoT"
+    columns={2}
+    items={[
+      {
+        title: 'Data Engineering',
+        description: 'If data is the new oil, data Engineering is the refinery. We transform raw data into actionable insights, improving decision-making. Organizations using advanced data management strategies saw a 60% increase in data quality (McKinsey).',
+        icon: 'tabler:database',
+      },
+      {
+        title: 'MLOps for Scalable AI Solutions',
+        description: 'We ensure your models remain scalable, reliable, and optimized. Firms with MLOps achieve up to 5x faster deployment and 30% better performance (McKinsey).',
+        icon: 'tabler:chart-line',
+      },
+      {
+        title: 'Generative AI for Innovation',
+        description: 'We help you automate creative processes and personalize experiences. Generative AI reduces development cycles by 30% (McKinsey).',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'IoT and Edge Computing for Connected Solutions',
+        description: 'Connect devices for smart monitoring. IoT increases operational efficiency by 25% and reduces costs by 15% (McKinsey).',
+        icon: 'tabler:network',
+      },
+      {
+        title: 'Computer Vision for Real-Time Insights',
+        description: 'Improve defect detection accuracy by 90%. McKinsey reports that businesses using computer vision achieve near-zero defects.',
+        icon: 'tabler:eye',
+      },
+      {
+        title: 'Machine Learning Model Development',
+        description: 'Leverage advanced machine learning algorithms to build predictive models that drive business insights. According to McKinsey, companies that invest in machine learning see up to a 20% increase in operational efficiency and a 15% reduction in overall costs.',
+        icon: 'tabler:brain',
+      },
+
+    ]}
+  />
+
+  <!-- Stats Widget ****************** -->
+  <Stats
+    title="The Impact of Strategic Consulting"
+    subtitle="See how our services deliver measurable business outcomes."
+    stats={[
+      { title: 'Data Science: Data-Driven Profitability', amount: '23x', description: 'more likely to acquire customers' },
+      { title: 'MLOPS: Model Deployment Time', amount: '5x', description: 'faster with MLOps' },
+      { title: 'IoT: Downtime Reduction', amount: '30%' },
+      { title: 'Computer Vision: Quality Control Accuracy', amount: '90%', description: 'with computer vision' },
+      { title: 'GenAI: Product Development Time', amount: '30%', description: 'reduction with GenAI' },
+    ]}
+  />
+
+  <!-- FAQs Widget ******************* -->
+  <FAQs
+    title="Frequently Asked Questions"
+    items={[
+      {
+        title: 'How does technology bring innovation to industries?',
+        description: 'Technology enables businesses to automate processes, enhance decision-making, and improve efficiency, driving measurable outcomes.'
+      },
+      {
+        title: 'How does technology support strategies for growth?',
+        description: 'By providing insights from large datasets and enabling predictive analysis, technology becomes a core enabler for growth strategies.'
+      },
+      {
+        title: 'Why is MLOps important?',
+        description: 'MLOps allows for scalable, reliable model deployment without disrupting operations, ensuring consistent improvements.'
+      },
+      {
+        title: 'How can IoT benefit industries?',
+        description: 'IoT enables real-time monitoring, predictive maintenance, and optimized asset utilization, reducing downtime and improving efficiency.'
+      },
+    ]}
+  />
+
+  <!-- CallToAction Widget *********** -->
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Contact Us',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready to Drive Innovation and Efficiency with Strategic Consulting?</Fragment>
+    <Fragment slot="subtitle">
+      Get in touch to learn how we can help your business grow using data engineering, AI, and IoT.
+    </Fragment>
+  </CallToAction>
+</Layout>
+---

@@ -1,0 +1,158 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import Image from '~/components/common/Image.astro';
+const machineLearningImage = "~/assets/images/MachineLearningImage.jpg";
+const metadata = {
+  title: 'Machine Learning Services for Business Innovation',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget ******************* -->
+
+  <Hero
+    tagline="Unleash the Power of Machine Learning"
+  >
+    <Fragment slot="title">
+      Elevate Your <span class="hidden sm:inline">Business</span> with <span class="text-accent dark:text-white highlight">Machine Learning</span> Solutions
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Empower your industry with cutting-edge machine learning services designed to optimize processes, enhance decision-making, and drive innovation.
+    </Fragment>
+
+    <Fragment slot="image">
+      <Image src={machineLearningImage} alt="Machine Learning for Businesses" class="mx-auto max-w-full" />
+    </Fragment>
+  </Hero>
+
+  <!-- Features Widget *************** -->
+
+  <Features
+  id="features"
+  title="Comprehensive Machine Learning Solutions"
+  subtitle="Transform your business with our tailored machine learning services."
+  columns={2}
+  items={[
+    {
+      title: 'Predictive Analytics',
+      description: 'Harness data to forecast trends and outcomes, enabling smarter business decisions. This can lead to a 25-30% improvement in decision-making processes. <a class="underline ..." href="https://www2.deloitte.com/us/en/pages/technology-media-and-telecommunications/articles/machine-learning-in-business.html" target="_blank">[Source: Deloitte]</a>',
+      icon: 'tabler:chart-line',
+    },
+    {
+      title: 'Automation & Process Optimization',
+      description: 'Automate repetitive tasks and optimize workflows to reduce operational costs by up to 20%. <a class="underline ..." href="https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/machine-learning-the-new-proving-ground-for-competitive-advantage" target="_blank">[Source: McKinsey]</a>',
+      icon: 'tabler:robot',
+    },
+    {
+      title: 'Customer Insights & Personalization', 
+      description: 'Utilize advanced algorithms to provide personalized customer experiences, increasing customer retention by up to 40%. <a class="underline ..." href="https://www.forbes.com/sites/forbestechcouncil/2022/06/16/how-machine-learning-personalization-is-driving-customer-experiences/?sh=1a9f85347719" target="_blank">[Source: Forbes]</a>',
+      icon: 'tabler:user-circle',
+    },
+    {
+      title: 'Supply Chain Optimization',
+      description: 'Improve efficiency with machine learning-powered supply chain management, reducing inventory costs by 20-50%. <a class="underline ..." href="https://www.bcg.com/publications/2021/supply-chain-management-in-the-age-of-ai-and-machine-learning" target="_blank">[Source: BCG]</a>',
+      icon: 'tabler:truck',
+    },
+    {
+      title: 'Quality Control & Defect Detection',
+      description: 'Achieve near-zero defects by using machine learning for real-time quality control and defect detection. <a class="underline ..." href="https://www.pwc.com/gx/en/issues/data-and-analytics/artificial-intelligence-predictions/quality-control.html" target="_blank">[Source: PWC]</a>',
+      icon: 'tabler:check',
+    },
+    {
+      title: 'Fraud Detection & Risk Management',
+      description: 'Prevent fraud and mitigate risks by leveraging machine learning algorithms with a 99% accuracy rate in anomaly detection. <a class="underline ..." href="https://www.accenture.com/us-en/insights/artificial-intelligence/machine-learning-ai-fraud-detection" target="_blank">[Source: Accenture]</a>',
+      icon: 'tabler:shield-check',
+    },
+    {
+      title: 'Predictive Maintenance',
+      description: 'Reduce equipment downtime by 30% with predictive maintenance, saving costs on repairs and enhancing productivity. <a class="underline ..." href="https://www.ibm.com/blogs/internet-of-things/iot-predictive-maintenance/" target="_blank">[Source: IBM]</a>',
+      icon: 'tabler:tools',
+    },
+    {
+      title: 'Natural Language Processing (NLP)',
+      description: 'Unlock valuable insights from unstructured text data, enhancing customer service, sentiment analysis, and more. <a class="underline ..." href="https://mitsloan.mit.edu/ideas-made-to-matter/machine-learning-natural-language-processing" target="_blank">[Source: MIT]</a>',
+      icon: 'tabler:message-circle',
+    },
+  ]}
+  />
+
+
+  <!-- Stats Widget ****************** -->
+
+  <Stats
+    title="Machine Learning Impact on Business"
+    subtitle="Discover the measurable results machine learning brings to industries worldwide."
+    stats={[
+      { title: 'Operational Efficiency', amount: '20-30%' },
+      { title: 'Customer Retention', amount: '40%' },
+      { title: 'Defect Reduction', amount: 'Near-Zero' },
+      { title: 'Predictive Accuracy', amount: '85-95%' },
+      { title: 'Fraud Detection Rate', amount: '99%' },
+      { title: 'Downtime Reduction', amount: '30%' },
+      { title: 'Cost Savings in Supply Chain', amount: '20-50%' },
+    ]}
+  />
+
+  <!-- FAQs Widget ******************* -->
+
+  <FAQs
+    title="Frequently Asked Questions"
+    items={[
+      {
+        title: 'How can machine learning benefit my business?',
+        description:
+          'Machine learning helps businesses by improving decision-making, optimizing processes, enhancing customer experiences, and automating workflows, leading to increased efficiency and cost savings.',
+      },
+      {
+        title: 'Is machine learning applicable to all industries?',
+        description:
+          'Yes, machine learning can be applied to a variety of industries including healthcare, finance, retail, manufacturing, logistics, and more. It adapts to the specific needs of each sector.',
+      },
+      {
+        title: 'What data is required for machine learning solutions?',
+        description:
+          'Machine learning requires historical data from business operations, including structured data (e.g., sales data) and unstructured data (e.g., customer reviews) for training models and generating insights.',
+      },
+      {
+        title: 'Is machine learning secure?',
+        description:
+          'We prioritize security by implementing advanced protocols to ensure data integrity, privacy, and compliance with industry regulations.',
+      },
+      {
+        title: 'What is the cost of implementing machine learning?',
+        description:
+          'The cost varies depending on the complexity of the project and the size of your business. Contact us for a customized pricing plan based on your specific requirements.',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-gray-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CallToAction Widget *********** -->
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Contact Us',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready to Transform Your Business with Machine Learning?</Fragment>
+
+    <Fragment slot="subtitle">
+      Reach out today and discover how our tailored machine learning solutions can drive innovation and efficiency in your industry.
+    </Fragment>
+  </CallToAction>
+</Layout>
