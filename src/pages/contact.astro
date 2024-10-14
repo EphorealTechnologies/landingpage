@@ -3,23 +3,51 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import ContactUs from '~/components/widgets/Contact.astro';
 import Features2 from '~/components/widgets/Features2.astro';
+
 const metadata = {
   title: 'Contact',
 };
 ---
+
 <Layout metadata={metadata}>
   <!-- HeroText Widget ******************* -->
   <HeroText tagline="Contact" title="Let's Connect!" />
   
   <!-- Container for the form with percentage-based padding -->
-  <div style="padding-left: 30%; padding-right: 30%;">
+  <div style="padding-left: 30%; padding-right: 30%;" id="hubspot-form-container">
+    <!-- HubSpot Form Scripts -->
     <script is:inline src="//js.hsforms.net/forms/embed/v2.js" client:load></script>
-    <script is:inline>
-        hbspt.forms.create({
-        region: "na1",
-        portalId: "47705130",
-        formId: "09b2019a-aa55-41e4-9fe4-85eb2a955c78"
-      });
-    </script>
   </div>
 </Layout>
+
+<script is:inline>
+  // Function to initialize the HubSpot form
+  function loadHubspotForm() {
+    if (typeof hbspt !== 'undefined') {
+      hbspt.forms.create({
+        region: "na1",
+        portalId: "47705130",
+        formId: "09b2019a-aa55-41e4-9fe4-85eb2a955c78",
+        target: "#hubspot-form-container"
+      });
+    }
+  }
+
+  // Initialize the form and setup burger menu
+  function init() {
+    loadHubspotForm();
+  }
+
+  // Clean up before Astro swaps the page to avoid memory leaks
+  document.addEventListener('astro:before-swap', () => {
+    // If needed, you can add clean-up logic here, like destroying instances or removing event listeners
+    const formContainer = document.querySelector("#hubspot-form-container");
+    formContainer.innerHTML = ''; // Remove the form when the page is swapped
+  }, { once: true });
+
+  // Initialize on first load
+  init();
+
+  // Re-initialize after swapping pages
+  document.addEventListener("astro:after-swap", init);
+</script>
