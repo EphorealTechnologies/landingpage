@@ -20,44 +20,45 @@ const metadata = {
     >Contact Us Form
     </button>
   </div>
+
   <!-- Popup for HubSpot form -->
-    <div
+  <div
     id="hubspot-form-popup"
     class="hidden fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50"
-    >
+  >
     <!-- Fixed form size -->
     <div 
       class="bg-white rounded-lg p-8 shadow-lg relative"
       style="width: 700px; height: 580px;"  
     >
-    <!-- Close Button -->
-    <button
-      class="absolute top-0 right-0 m-4 text-gray-700 hover:text-gray-900"
-      onclick="document.getElementById('hubspot-form-popup').classList.add('hidden')"
-    >
-      &#10005; <!-- X symbol for closing -->
-    </button>
-    
-    <!-- HubSpot form container -->
-    <div id="hubspotFormContainer" class="text-base"></div>
+      <!-- Close Button -->
+      <button
+        class="absolute top-0 right-0 m-4 text-gray-700 hover:text-gray-900"
+        onclick="document.getElementById('hubspot-form-popup').classList.add('hidden')"
+      >
+        &#10005; <!-- X symbol for closing -->
+      </button>
+      
+      <!-- HubSpot form container -->
+      <div id="hubspotFormContainer" class="text-base"></div>
+    </div>
   </div>
-</div>
-
 
   <script>
     document.addEventListener("DOMContentLoaded", function(event) { 
       const cta = document.getElementById("cta-button");
-      const formEmbed = document.createElement("div");
-      formEmbed.id = "hubspotForm";
-      formEmbed.innerHTML = "";  // HubSpot form will be injected here
-      document.getElementById("hubspotFormContainer").appendChild(formEmbed);
 
       // Event listener to open popup and inject HubSpot form
       cta.addEventListener("click", function(event) {
         event.preventDefault();
         document.getElementById('hubspot-form-popup').classList.remove('hidden');
 
-        if (!document.getElementById('hubspotForm').innerHTML.trim()) {
+        if (!document.getElementById('hubspotForm')) {
+          // Create a div for HubSpot form if it doesn't exist yet
+          const formEmbed = document.createElement("div");
+          formEmbed.id = "hubspotForm";
+          document.getElementById("hubspotFormContainer").appendChild(formEmbed);
+
           // HubSpot form embed code
           hbspt.forms.create({
             region: "na1",
