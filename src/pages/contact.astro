@@ -7,21 +7,9 @@ const metadata = {
 };
 ---
 
-<Layout metadata={metadata} >
+<Layout metadata={metadata} transition:persist >
   <!-- HeroText Widget ******************* -->
-  <HeroText tagline="Contact" title="Let's Connect!" />
-  
-  <!-- Container for the form with percentage-based padding -->
-  <div style="padding-left: 30%; padding-right: 30%;" id="hubspot-form-container">
-    <script is:inline data-astro-rerun charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
-    <script is:inline data-astro-rerun>
-      document.addEventListener('astro:page-load', () => {
-      hbspt.forms.create({
-        region: "na1",
-        portalId: "47705130",
-        formId: "09b2019a-aa55-41e4-9fe4-85eb2a955c78"
-      });
-    });
-    </script>
-  </div>
+  <HeroText tagline="Get in touch" title="Contact Us" subtitle="Your Vision, Our Expertise. Let's transform your business Together."/>
+  <p align="center"> <iframe src="https://share.hsforms.com/1CbIBmqpVQeSf5IXrKpVceAsehii" height="680" width="600" title="Iframe Example"></iframe> </p>
+
 </Layout>
