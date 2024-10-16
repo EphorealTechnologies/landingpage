@@ -11,9 +11,11 @@ import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import Brands from '~/components/widgets/Brands.astro';
+
 
 const metadata = {
-  title: 'Ephoreal Technologies — your Data Strategy partner',
+  title: 'Ephoreal Technologies — your data strategy partner',
   ignoreTitleTemplate: true,
 };
 ---
@@ -35,23 +37,149 @@ const metadata = {
     image={{ src: '~/assets/images/dataAnalysis.jpg', alt: 'AstroWind Hero Image' }}
   >
     <Fragment slot="title">
-    Empowering Enterprises with 
+    Empowering enterprises with 
     <br>
     <span class="text-accent dark:text-white highlight"> 
-    Data-Driven 
+    data-driven 
     </span> <br>
     decision making 
+    <br>
+    <br>
     </Fragment>
-
+    
+    
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
         <span class="font-semibold">Enhance your intuition using data.</span> 
-        Transform your data into information and information into business insights,
-         —insights to actionable growth strategies.
+        <br> Transform your data into information and information into business insights,
+        <br> -insights to actionable growth strategies.
     </Fragment>
   </Hero>
 
   <!-- Content Widget **************** -->
+
+  <Content
+    isAfterContent
+    tagline="What we do?"
+    title="End-to-End Enterprise Data Solutions"
+    items={[
+      {
+        title: 'Data Engineering',
+        description:
+          'We design and implement data pipelines that process and store data, enabling your organization to make informed decisions.',
+      },
+      {
+        title: 'Machine Learning',
+        description:
+          'With cutting-edge AI and machine learning, we help businesses harness their data to predict trends, automate tasks, and generate insights.',
+      },
+      {
+        title: 'MLOps',
+        description:
+          'We streamline the lifecycle of machine learning models, ensuring smooth deployment, management, and scaling with our MLOps solutions.',
+      },
+    ]}
+    image={{
+      src: 'src/assets/images/DataScienceFlow.jpg',
+      alt: 'Enterprise Data Blueprint',
+    }}
+  >
+    <Fragment slot="content">We provide data engineering, machine learning, and MLOps services that transform how businesses operate, innovate, and scale.</Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <Brands
+    title="Machine Learning, Data Engineering & MLOps Tools"
+    subtitle="The cutting-edge technologies and platforms that we use to empower your data-driven innovation."
+    icons={[]}
+    images={[
+      {
+        text: "TensorFlow",
+        src: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg', // TensorFlow
+        alt: 'TensorFlow',
+        
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg', // PyTorch
+        alt: 'PyTorch',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg', // AWS
+        alt: 'AWS',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg', // Google Cloud
+        alt: 'Google Cloud',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg', // Microsoft Azure
+        alt: 'Microsoft Azure',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png', // Databricks
+        alt: 'Databricks',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/en/f/f4/Docker_logo.svg', // Docker
+        alt: 'Docker',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg', // Kubernetes
+        alt: 'Kubernetes',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg', // Apache Spark
+        alt: 'Apache Spark',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg', // Scikit-learn
+        alt: 'Scikit-learn',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg', // Jupyter Notebooks
+        alt: 'Jupyter Notebooks',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png', // Apache Airflow
+        alt: 'Apache Airflow',
+      },
+      {
+        src: 'https://avatars.githubusercontent.com/u/39938107?s=200&v=4', // MLflow
+        alt: 'MLflow',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg', // Prometheus
+        alt: 'Prometheus',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Amazon-Redshift-Logo.svg', // Amazon Redshift
+        alt: 'Amazon Redshift',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg', // PostgreSQL
+        alt: 'PostgreSQL',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Cassandra_logo.svg', // Apache Cassandra
+        alt: 'Apache Cassandra',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Apache_Flink_logo.svg', // Apache Flink
+        alt: 'Apache Flink',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Grafana_logo.svg', // Grafana
+        alt: 'Grafana',
+      },
+      {
+        src: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg', // GitHub
+        alt: 'GitHub',
+      },
+    ]}
+/>
 
   <Content
     isReversed
@@ -80,7 +208,7 @@ const metadata = {
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      src: '~/assets/images/Planning.jpg',
       alt: 'Colorful Image',
     }}
   >
@@ -93,6 +221,7 @@ const metadata = {
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
     </Fragment>
   </Content>
+
 
   <!-- Content Widget **************** -->
 
