@@ -59,7 +59,7 @@ const metadata = {
   <!-- Content Widget **************** -->
 
   <Content
-    isAfterContent
+    isReversed
     tagline="What we do?"
     title="End-to-End Enterprise Data Solutions"
     items={[
@@ -80,11 +80,52 @@ const metadata = {
       },
     ]}
     image={{
-      src: 'src/assets/images/DataScienceFlow.jpg',
+      src: '~/assets/images/DataScienceFlow.jpg',
       alt: 'Enterprise Data Blueprint',
     }}
   >
     <Fragment slot="content">We provide data engineering, machine learning, and MLOps services that transform how businesses operate, innovate, and scale.</Fragment>
+
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Content>
+
+  <Content
+    isAfterContent
+    tagline="How we do strategic consult"
+    title="First principles!"
+    items={[
+      {
+        title: 'Domain understanding',
+        description:
+          'We are domain agnostic, exploring with an openmind to identity the source of your pain points, problem and inefficiencies. Gather requirements from domain experts and align with business prioritise',
+      },
+      {
+        title: 'Solution',
+        description:
+          'We do a literature survey and design technical solution.',
+      },
+      {
+        title: 'Demo',
+        description:
+          'We create a simple POC for alpha release, talk to customer or infield experts for feedback.',
+      },
+      {
+        title: 'Roadmap',
+        description:
+          'We provide roadmap for production delivery.',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/Planning.jpg',
+      alt: 'Colorful Image',
+    }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
+      Gain a competitive advantage by incorporating industry leading practices
+    </Fragment>
 
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
@@ -180,48 +221,6 @@ const metadata = {
       },
     ]}
 />
-
-  <Content
-    isReversed
-    tagline="How we do strategic consult"
-    title="First principles!"
-    items={[
-      {
-        title: 'Domain understanding',
-        description:
-          'We are domain agnostic, exploring with an openmind to identity the source of your pain points, problem and inefficiencies. Gather requirements from domain experts and align with business prioritise',
-      },
-      {
-        title: 'Solution',
-        description:
-          'We do a literature survey and design technical solution.',
-      },
-      {
-        title: 'Demo',
-        description:
-          'We create a simple POC for alpha release, talk to customer or infield experts for feedback.',
-      },
-      {
-        title: 'Roadmap',
-        description:
-          'We provide roadmap for production delivery.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/Planning.jpg',
-      alt: 'Colorful Image',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Building on modern foundations</h3>
-      Gain a competitive advantage by incorporating industry leading practices
-    </Fragment>
-
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
-  </Content>
-
 
   <!-- Content Widget **************** -->
 
