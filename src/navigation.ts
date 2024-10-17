@@ -107,13 +107,21 @@ export const footerData = {
       title: 'Contact Us',
       links: [
         { text: 'Email: info@ephoreal.com', href: 'mailto:contact@ephoreal.com' },
-        { text: 'Book a meeting', href: getPermalink('/contact') },
-        { text: 'Address: 2nd floor, 14, Rajaji Street, Sudhana Nagar, Nainarmandapam, Puducherry, India-605004'},
-        // { text: 'Skills', href: '#' },
+        { text: '<strong>Chat with us</strong>', href: getPermalink('/contact') },
+        { text: "<strong>Poland Headquarters:</strong> Ul. Emilii Plater 36a, Warsaw, 00-113, Poland <br> <strong>Contact:</strong> +48 730 305 933" },
+
+// { text: 'Skills', href: '#' },
         // { text: 'Status', href: '#' },
       ],
     },
     {
+      title: 'Other offices:',
+      links: [
+    { text: "<strong>Romania Office:</strong> Starda Bulevardul Lulia mania 69 Bucharest 077042, Romania <strong>Contact:</strong> +40 727 111 188" },
+    { text: "<strong>India Office:</strong> 2nd floor, 14, Rajaji Street, Sudhana Nagar, Nainarmandapam, Puducherry, India-605004 <strong>Contact:</strong> +91 97901 76084" },
+      ],
+    },
+        {
       title: 'Company',
       links: [
         { text: 'About', href: '/about' },
