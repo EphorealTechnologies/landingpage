@@ -10,56 +10,57 @@ export const headerData = {
           href: getPermalink('/homes/Consult'),
         },
         {
-          text: 'GenAI',
-          href: getPermalink('/homes/GenAI'),
-        },
-        {
           text: 'Data Engineering',
           href: getPermalink('/homes/dataEngineering'),
         },
         {
-          text: 'Custom Machine Learning',
+          text: 'Machine Learning',
           href: getPermalink('/homes/dataScience'),
-        },
-        {
-          text: 'Computer Vision',
-          href: getPermalink('/homes/ComputerVision'),
-        },
-        {
-          text: 'IOT',
-          href: getPermalink('/homes/IOT'),
         },
         {
           text: 'MLOPS',
           href: getPermalink('/homes/MLOPS'),
         },
+        {
+          text: 'IOT',
+          href: getPermalink('/homes/IOT'),
+        },
+
+        // {
+        //   text: 'GenAI',
+        //   href: getPermalink('/homes/GenAI'),
+        // },
+        // {
+        //   text: 'Computer Vision',
+        //   href: getPermalink('/homes/ComputerVision'),
+        // },
       ],
     },
-    {
-      text: 'Industries',
-      links: [
-        {
-          text: 'Healthcare',
-          href: getPermalink('/homes/Healthcare'),
-        },
-        {
-          text: 'Manufacturing',
-          href: getPermalink('/homes/Manufacturing'),
-        },
-        {
-          text: 'Retail',
-          href: getPermalink('/homes/Retail'),
-        },
-        {
-          text: 'banking and finance',
-          href: getPermalink('/homes/banking_finance'),
-        },
-        {
-          text: 'Logistics and supply chain',
-          href: getPermalink('/homes/logistics_supplychain'),
-        },
-      ],
-    },
+    // {
+    //   text: 'Industries',
+    //   links: [
+    //     {
+    //       text: 'Healthcare',
+    //       href: getPermalink('/homes/Healthcare'),
+    //     },
+    //     {
+    //       text: 'Manufacturing',
+    //       href: getPermalink('/homes/Manufacturing'),
+    //     },
+    //     {
+    //       text: 'Retail',
+    //       href: getPermalink('/homes/Retail'),
+    //     },
+    //     {
+    //       text: 'banking and finance',
+    //       href: getPermalink('/homes/banking_finance'),
+    //     },
+    //     {
+    //       text: 'Logistics and supply chain',
+    //       href: getPermalink('/homes/logistics_supplychain'),
+    //     },
+    //   ],
+    // },
     {
       text: 'AboutUs',
       href: getPermalink('/about'),
@@ -84,12 +85,12 @@ export const footerData = {
       title: 'Services',
       links: [
         { text: 'Strategic consult', href: '/homes/Consult' },
-        { text: 'GenAI', href: '/homes/GenAI' },
+        // { text: 'GenAI', href: '/homes/GenAI' },
         { text: 'Data Engineering', href: '/homes/dataEngineering' },
-        { text: 'Custom Machine Learning', href: '/homes/dataScience' },
-        { text: 'Computer Vision', href: '/homes/ComputerVision' },
-        { text: 'IOT', href: '/homes/IOT' },
+        { text: 'Machine Learning', href: '/homes/dataScience' },
+        // { text: 'Computer Vision', href: '/homes/ComputerVision' },
         { text: 'MLOPS', href: '/homes/MLOPS' },
+        { text: 'IOT', href: '/homes/IOT' },
       ],
     },
     // {
