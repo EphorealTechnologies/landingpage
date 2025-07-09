@@ -1,0 +1,154 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Image from '~/components/common/Image.astro';
+
+const genAIHeroImage = "~/assets/images/MLOPS.jpg";
+
+const metadata = {
+  title: 'Generative AI Services for Intelligent Business Solutions',
+  description: 'Transform your business with cutting-edge generative AI including RAG, fine-tuning, MCP integration, and custom agents.',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget -->
+  <Hero
+    tagline="Unlock the Power of Generative AI"
+    title="Empower Your <span class='text-accent dark:text-white highlight'>Business Intelligence</span> with Generative AI"
+    subtitle="Leverage advanced AI technologies including RAG, fine-tuning, MCP integration, and custom agents to create intelligent, context-aware solutions that drive innovation and efficiency."
+    image={{ src: genAIHeroImage, alt: 'Generative AI' }}
+  >
+    <Image src={genAIHeroImage} alt="Generative AI" width=600 class="mx-auto max-w-full" />
+  </Hero>
+
+  <!-- Features Widget -->
+  <Features
+    title="Our Comprehensive Generative AI Services"
+    subtitle="Transform your business operations with cutting-edge AI technologies."
+    items={[
+      {
+        title: 'RAG (Retrieval Augmented Generation)',
+        description: 'Enhance AI responses with real-time data retrieval from your knowledge base, ensuring accurate and up-to-date information.',
+        icon: 'tabler:brain',
+      },
+      {
+        title: 'Fine-tuning LLM Models',
+        description: 'Customize large language models for your specific domain, improving accuracy and relevance for your business use cases.',
+        icon: 'tabler:settings',
+      },
+      {
+        title: 'MCP (Model Context Protocol)',
+        description: 'Integrate AI with your internal systems including documents, Excel, ERP, CRM, email, WhatsApp, and browser data.',
+        icon: 'tabler:database',
+      },
+      {
+        title: 'Custom Agents',
+        description: 'Create intelligent MCP agents that perform actions with human approval and supervision, automating complex workflows.',
+        icon: 'tabler:robot',
+      },
+    ]}
+  />
+
+  <!-- Content Widget -->
+  <Content
+    isReversed
+    tagline="Why Choose Generative AI?"
+    title="The Benefits of Generative AI"
+    subtitle="See how generative AI enhances business operations across industries."
+    items={[
+      {
+        title: 'Enhanced Decision Making',
+        description: 'AI-powered insights from RAG systems provide accurate, real-time information for better business decisions.',
+      },
+      {
+        title: 'Customized Solutions',
+        description: 'Fine-tuned models adapt to your specific industry and use cases, delivering more relevant and accurate responses.',
+      },
+      {
+        title: 'Seamless Integration',
+        description: 'MCP enables AI to work with your existing systems, creating a unified intelligent ecosystem.',
+      },
+      {
+        title: 'Automated Workflows',
+        description: 'Custom agents handle complex tasks with human oversight, increasing efficiency and reducing manual work.',
+      },
+    ]}
+  >
+    <Fragment slot="content">
+      Generative AI transforms how businesses interact with data and automate processes, creating intelligent systems that learn and adapt to your specific needs.
+    </Fragment>
+  </Content>
+
+  <!-- Steps Widget -->
+  <Steps
+    title="Our Generative AI Implementation Process"
+    subtitle="A systematic approach to deploying intelligent AI solutions."
+    items={[
+      {
+        title: 'Assessment & Planning',
+        description: 'Analyze your business needs and design a comprehensive generative AI strategy tailored to your objectives.',
+      },
+      {
+        title: 'Data Integration',
+        description: 'Set up MCP connections to integrate your internal data sources and prepare for RAG implementation.',
+      },
+      {
+        title: 'Model Development',
+        description: 'Fine-tune language models and develop custom agents based on your specific requirements and use cases.',
+      },
+      {
+        title: 'Deployment & Training',
+        description: 'Deploy the solution with comprehensive training for your team and establish monitoring protocols.',
+      },
+    ]}
+  />
+
+  <!-- FAQs Widget -->
+  <FAQs
+    title="Frequently Asked Questions"
+    subtitle="Common questions about our generative AI services."
+    items={[
+      {
+        title: 'What is RAG and how does it work?',
+        description: 'RAG (Retrieval Augmented Generation) combines information retrieval with text generation, allowing AI to access and use real-time data from your knowledge base to provide accurate, up-to-date responses.',
+      },
+      {
+        title: 'How does fine-tuning improve AI performance?',
+        description: 'Fine-tuning adapts pre-trained language models to your specific domain, improving accuracy, reducing hallucinations, and making responses more relevant to your business context.',
+      },
+      {
+        title: 'What systems can MCP integrate with?',
+        description: 'MCP can integrate with virtually any system including documents, Excel files, ERP systems, CRM platforms, email clients, messaging apps like WhatsApp, and web browsers.',
+      },
+      {
+        title: 'How do custom agents work with human supervision?',
+        description: 'Custom agents can perform automated actions but require human approval for critical decisions, ensuring safety while maintaining efficiency through intelligent automation.',
+      },
+      {
+        title: 'Is generative AI secure for business use?',
+        description: 'Yes, we implement enterprise-grade security measures including data encryption, access controls, and compliance with industry standards to ensure your data remains protected.',
+      },
+      {
+        title: 'What ROI can I expect from generative AI?',
+        description: 'Businesses typically see 40-60% improvement in efficiency, 30-50% reduction in manual tasks, and significant improvements in decision-making accuracy and speed.',
+      },
+    ]}
+  />
+
+  <!-- Call to Action Widget -->
+  <CallToAction
+    title="Ready to Transform Your Business with Generative AI?"
+    subtitle="Contact us today to learn how our generative AI solutions can enhance your business intelligence and automation capabilities."
+  >
+    <Fragment slot="title">Ready to Transform Your Business with Generative AI?</Fragment>
+    <Fragment slot="subtitle">
+      Contact us today to learn how our generative AI solutions can enhance your business intelligence and automation capabilities.
+    </Fragment>
+  </CallToAction>
+</Layout>

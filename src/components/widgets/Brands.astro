@@ -21,18 +21,132 @@ const {
 <WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-6xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
   <Headline title={title} subtitle={subtitle} tagline={tagline} />
 
-  <div class="flex flex-wrap justify-center gap-x-6 sm:gap-x-12 lg:gap-x-24">
-    {icons && icons.map((icon) => <Icon name={icon} class="py-3 lg:py-5 w-12 h-auto mx-auto sm:mx-0 text-gray-500" />)}
-    {
-      images &&
-        images.map(
-          (image) =>
-            image.src && (
-              <div class="flex justify-center col-span-1 my-2 lg:my-4 py-1 px-3 rounded-md dark:bg-gray-200">
-                <Image src={image.src} alt={image.alt || ''} class="max-h-12" width={120} height={48} layout="fixed" />
-              </div>
-            )
-        )
-    }
+  <!-- 3D Logo Cloud Container -->
+  <div id="logo-cloud-container" class="w-full h-96 relative">
+    <canvas id="logo-cloud-canvas" class="w-full h-full"></canvas>
   </div>
+
+  <!-- Three.js Script -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.166.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('logo-cloud-container');
+      const canvas = document.getElementById('logo-cloud-canvas');
+      
+      if (!container || !canvas) return;
+
+      // 1. SCENE SETUP
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true 
+      });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // 2. INITIALIZE ORBIT CONTROLS
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.minDistance = 5;
+      controls.maxDistance = 20;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.5;
+      controls.enableZoom = false; // Disable zooming/scrolling
+
+      // 3. LOGO DATA
+      const logos = [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Databricks_Logo.png' },
+        { src: 'https://upload.wikimedia.org/wikipedia/en/f/f4/Docker_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/6/67/Kubernetes_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/d/de/AirflowLogo.png' },
+        { src: 'https://avatars.githubusercontent.com/u/39938107?s=200&v=4' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Amazon-Redshift-Logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Cassandra_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/7/70/Apache_Flink_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Grafana_logo.svg' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' }
+      ];
+
+      // 4. CREATE THE LOGO CLOUD
+      const logoCloud = new THREE.Group();
+      const textureLoader = new THREE.TextureLoader();
+      const radius = 5;
+      const totalLogos = logos.length;
+      const phi = Math.PI * (Math.sqrt(5) - 1);
+
+      for (let i = 0; i < totalLogos; i++) {
+        const y = 1 - (i / (totalLogos - 1)) * 2;
+        const radiusAtY = Math.sqrt(1 - y * y);
+        const theta = phi * i;
+        const x = Math.cos(theta) * radiusAtY;
+        const z = Math.sin(theta) * radiusAtY;
+        
+        const geometry = new THREE.PlaneGeometry(1, 1);
+        const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, transparent: true });
+        const mesh = new THREE.Mesh(geometry, material);
+
+        textureLoader.load(logos[i].src, (texture) => {
+          mesh.material.map = texture;
+          const aspectRatio = texture.image.width / texture.image.height;
+          mesh.scale.set(aspectRatio, 1, 1);
+          mesh.material.needsUpdate = true;
+        });
+
+        mesh.position.set(x * radius, y * radius, z * radius);
+        mesh.lookAt(new THREE.Vector3(0, 0, 0));
+        logoCloud.add(mesh);
+      }
+      scene.add(logoCloud);
+
+      // 5. SET CAMERA POSITION
+      camera.position.z = 5;
+
+      // 6. ANIMATION LOOP
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // 7. HANDLE WINDOW RESIZING
+      function handleResize() {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+
+      window.addEventListener('resize', handleResize);
+      
+      // Initial resize call
+      handleResize();
+    });
+  </script>
 </WidgetWrapper>

@@ -17,14 +17,14 @@ export const headerData = {
           text: 'Machine Learning',
           href: getPermalink('/homes/dataScience'),
         },
-        {
-          text: 'MLOPS',
-          href: getPermalink('/homes/MLOPS'),
-        },
-        {
-          text: 'IOT',
-          href: getPermalink('/homes/IOT'),
-        },
+            {
+      text: 'Generative AI',
+      href: getPermalink('/homes/GenAI'),
+    },
+            {
+      text: 'Custom Software',
+      href: getPermalink('/homes/customSoftware'),
+    },
 
         // {
         //   text: 'GenAI',
@@ -89,8 +89,8 @@ export const footerData = {
         { text: 'Data Engineering', href: '/homes/dataEngineering' },
         { text: 'Machine Learning', href: '/homes/dataScience' },
         // { text: 'Computer Vision', href: '/homes/ComputerVision' },
-        { text: 'MLOPS', href: '/homes/MLOPS' },
-        { text: 'IOT', href: '/homes/IOT' },
+        { text: 'Generative AI', href: '/homes/GenAI' },
+        { text: 'Custom Software', href: '/homes/customSoftware' },
       ],
     },
     // {

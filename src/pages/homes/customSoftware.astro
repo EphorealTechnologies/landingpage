@@ -1,0 +1,163 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features from '~/components/widgets/Features.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import Image from '~/components/common/Image.astro';
+
+const customSoftwareHeroImage = "~/assets/images/MLOPS2.jpg";
+
+const metadata = {
+  title: 'Custom Software Development Services for Business Growth',
+  description: 'Transform your business with custom web and mobile applications designed to streamline operations, enhance productivity, and drive growth.',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero Widget -->
+  <Hero
+    tagline="Transform Your Business with Custom Software"
+  >
+    <Fragment slot="title">
+      Empower Your <span class="text-accent dark:text-white highlight">Digital Transformation</span> with Custom Software Development
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Unlock the full potential of your business with our cutting-edge custom web and mobile applications designed to streamline operations and drive growth.
+    </Fragment>
+
+    <Fragment slot="image">
+      <Image src={customSoftwareHeroImage} alt="Custom Software Development" class="mx-auto max-w-full" />
+    </Fragment>
+  </Hero>
+
+  <!-- Features Widget -->
+  <Features
+    id="features"
+    title="Our Comprehensive Custom Software Development Services"
+    subtitle="Empower your business with tailored web and mobile solutions."
+    columns={2}
+    items={[
+      {
+        title: 'Custom Web Applications',
+        description: 'Build scalable, secure web applications that streamline your business processes and enhance user experience.',
+        icon: 'tabler:world',
+      },
+      {
+        title: 'Mobile App Development',
+        description: 'Create native and cross-platform mobile applications that engage customers and improve operational efficiency.',
+        icon: 'tabler:device-mobile',
+      },
+      {
+        title: 'E-commerce Solutions',
+        description: 'Develop robust e-commerce platforms that drive sales, manage inventory, and provide seamless customer experiences.',
+        icon: 'tabler:shopping-cart',
+      },
+      {
+        title: 'Enterprise Software',
+        description: 'Design enterprise-grade software solutions that integrate with your existing systems and scale with your business.',
+        icon: 'tabler:building',
+      },
+      {
+        title: 'API Development & Integration',
+        description: 'Create and integrate APIs to connect your applications with third-party services and internal systems.',
+        icon: 'tabler:api',
+      },
+      {
+        title: 'Cloud-Native Applications',
+        description: 'Build cloud-native applications that are scalable, resilient, and cost-effective for modern business needs.',
+        icon: 'tabler:cloud',
+      },
+      {
+        title: 'Progressive Web Apps (PWA)',
+        description: 'Develop PWAs that combine the best of web and mobile experiences with offline capabilities and fast performance.',
+        icon: 'tabler:device-laptop',
+      },
+      {
+        title: 'Legacy System Modernization',
+        description: 'Transform outdated systems into modern, efficient applications that meet current business requirements.',
+        icon: 'tabler:refresh',
+      },
+    ]}
+  />
+
+  <!-- Stats Widget -->
+  <Stats
+    title="The Impact of Custom Software Development"
+    subtitle="See the numbers that demonstrate the effectiveness of our custom software solutions."
+    stats={[
+      { title: 'Development Cost Savings', amount: '40-60%' },
+      { title: 'Time to Market', amount: '50% faster' },
+      { title: 'User Productivity', amount: '35% increase' },
+      { title: 'ROI Improvement', amount: '3-5x' },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </Stats>
+
+  <!-- FAQs Widget -->
+  <FAQs
+    title="Frequently Asked Questions"
+    subtitle="Common questions about our custom software development services."
+    items={[
+      {
+        title: 'What is custom software development?',
+        description:
+          'Custom software development involves creating tailored applications specifically designed to meet your business needs, unlike off-the-shelf solutions that may not fit your unique requirements.',
+      },
+      {
+        title: 'How long does it take to develop custom software?',
+        description:
+          'Development time varies based on complexity, typically ranging from 2-6 months for web applications and 3-8 months for mobile apps. We follow agile methodologies to deliver incremental value.',
+      },
+      {
+        title: 'Can custom software save costs in the long run?',
+        description:
+          'Yes, custom software can reduce operational costs by 40-60% by automating manual processes, improving efficiency, and eliminating the need for multiple off-the-shelf solutions.',
+      },
+      {
+        title: 'Is custom software secure?',
+        description:
+          'Custom software security is a priority. We implement robust security measures including encryption, authentication, and regular security audits to protect your data and systems.',
+      },
+      {
+        title: 'How does custom software improve business efficiency?',
+        description:
+          'Custom software streamlines workflows, automates repetitive tasks, provides real-time insights, and integrates with existing systems, leading to 35% improvement in overall productivity.',
+      },
+      {
+        title: 'Can custom software integrate with existing systems?',
+        description:
+          'Yes, we specialize in creating applications that seamlessly integrate with your existing ERP, CRM, databases, and third-party services through APIs and custom connectors.',
+      },
+    ]}
+  >
+    <Fragment slot="bg">
+      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
+    </Fragment>
+  </FAQs>
+
+  <!-- CallToAction Widget -->
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Get Started',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready to Transform Your Business with Custom Software?</Fragment>
+
+    <Fragment slot="subtitle">
+      Contact us today to learn how our custom software development solutions can revolutionize your business operations and drive growth.
+    </Fragment>
+  </CallToAction>
+</Layout>
+
