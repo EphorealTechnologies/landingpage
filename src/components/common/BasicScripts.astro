@@ -163,28 +163,49 @@ import { UI } from 'astrowind:config';
   // Stars Background Initialization
   let starsInitialized = false;
   let animationId = null;
+  let starsScene = null;
+  let starsRenderer = null;
+
+  function cleanupStars() {
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+    if (starsRenderer) {
+      starsRenderer.dispose();
+      starsRenderer = null;
+    }
+    if (starsScene) {
+      starsScene.clear();
+      starsScene = null;
+    }
+    starsInitialized = false;
+  }
 
   function initStars() {
     const container = document.getElementById('stars-background');
     const canvas = document.getElementById('stars-canvas');
     
-    if (!container || !canvas || starsInitialized) return;
+    if (!container || !canvas) return;
+    
+    // Clean up any existing stars instance
+    cleanupStars();
     
     starsInitialized = true;
 
     // Import Three.js dynamically
     import('https://unpkg.com/three@0.166.1/build/three.module.js').then((THREE) => {
       // 1. SCENE SETUP
-      const scene = new THREE.Scene();
+      starsScene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({
+      starsRenderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
         alpha: true 
       });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0);
+      starsRenderer.setSize(window.innerWidth, window.innerHeight);
+      starsRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      starsRenderer.setClearColor(0x000000, 0);
 
       // 2. CREATE STARS
       const starsGroup = new THREE.Group();
@@ -221,11 +242,13 @@ import { UI } from 'astrowind:config';
         starsGroup.add(star);
       }
       
-      scene.add(starsGroup);
+      starsScene.add(starsGroup);
       camera.position.z = 80;
 
       // 3. ANIMATION LOOP
       function animate() {
+        if (!starsInitialized) return; // Stop animation if cleaned up
+        
         animationId = requestAnimationFrame(animate);
         
         const diagonalAxis = new THREE.Vector3(1, 0, 1).normalize();
@@ -238,28 +261,41 @@ import { UI } from 'astrowind:config';
           star.scale.set(scale, scale, scale);
         });
         
-        renderer.render(scene, camera);
+        if (starsRenderer && starsScene) {
+          starsRenderer.render(starsScene, camera);
+        }
       }
       animate();
 
       // 4. HANDLE WINDOW RESIZING
       function handleResize() {
+        if (!starsRenderer || !starsInitialized) return;
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        starsRenderer.setSize(window.innerWidth, window.innerHeight);
       }
       window.addEventListener('resize', handleResize);
       handleResize();
+    }).catch(error => {
+      console.error('Failed to load Three.js for stars:', error);
     });
   }
 
   // Initialize stars on page load and navigation
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initStars);
-  } else {
-    initStars();
+  function setupStarsInit() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initStars);
+    } else {
+      initStars();
+    }
   }
 
-  document.addEventListener('astro:page-load', initStars);
-  document.addEventListener('astro:after-swap', initStars);
+  // Setup initial stars
+  setupStarsInit();
+
+  // Clean up and reinitialize on page navigation
+  document.addEventListener('astro:before-swap', cleanupStars);
+  document.addEventListener('astro:after-swap', () => {
+    setTimeout(initStars, 100); // Small delay to ensure DOM is ready
+  });
 </script>

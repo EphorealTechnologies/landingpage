@@ -39,33 +39,62 @@ const {
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // Wait for DOM to be ready
-    document.addEventListener('DOMContentLoaded', function() {
+    let logoCloudInitialized = false;
+    let logoRenderer = null;
+    let logoScene = null;
+    let logoControls = null;
+    let logoAnimationId = null;
+
+    function cleanupLogoCloud() {
+      if (logoAnimationId) {
+        cancelAnimationFrame(logoAnimationId);
+        logoAnimationId = null;
+      }
+      if (logoControls) {
+        logoControls.dispose();
+        logoControls = null;
+      }
+      if (logoRenderer) {
+        logoRenderer.dispose();
+        logoRenderer = null;
+      }
+      if (logoScene) {
+        logoScene.clear();
+        logoScene = null;
+      }
+      logoCloudInitialized = false;
+    }
+
+    function initLogoCloud() {
       const container = document.getElementById('logo-cloud-container');
       const canvas = document.getElementById('logo-cloud-canvas');
       
       if (!container || !canvas) return;
 
+      // Clean up any existing instance
+      cleanupLogoCloud();
+      logoCloudInitialized = true;
+
       // 1. SCENE SETUP
-      const scene = new THREE.Scene();
+      logoScene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({
+      logoRenderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
         alpha: true 
       });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      logoRenderer.setSize(container.clientWidth, container.clientHeight);
+      logoRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // 2. INITIALIZE ORBIT CONTROLS
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.05;
-      controls.minDistance = 5;
-      controls.maxDistance = 20;
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.5;
-      controls.enableZoom = false; // Disable zooming/scrolling
+      logoControls = new OrbitControls(camera, logoRenderer.domElement);
+      logoControls.enableDamping = true;
+      logoControls.dampingFactor = 0.05;
+      logoControls.minDistance = 5;
+      logoControls.maxDistance = 20;
+      logoControls.autoRotate = true;
+      logoControls.autoRotateSpeed = 1.5;
+      logoControls.enableZoom = false; // Disable zooming/scrolling
 
       // 3. LOGO DATA
       const logos = [
@@ -110,6 +139,7 @@ const {
         const mesh = new THREE.Mesh(geometry, material);
 
         textureLoader.load(logos[i].src, (texture) => {
+          if (!logoCloudInitialized) return; // Skip if component was cleaned up
           mesh.material.map = texture;
           const aspectRatio = texture.image.width / texture.image.height;
           mesh.scale.set(aspectRatio, 1, 1);
@@ -120,33 +150,55 @@ const {
         mesh.lookAt(new THREE.Vector3(0, 0, 0));
         logoCloud.add(mesh);
       }
-      scene.add(logoCloud);
+      logoScene.add(logoCloud);
 
       // 5. SET CAMERA POSITION
       camera.position.z = 5;
 
       // 6. ANIMATION LOOP
       function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+        if (!logoCloudInitialized) return; // Stop animation if cleaned up
+        
+        logoAnimationId = requestAnimationFrame(animate);
+        if (logoControls) logoControls.update();
+        if (logoRenderer && logoScene) logoRenderer.render(logoScene, camera);
       }
       animate();
 
       // 7. HANDLE WINDOW RESIZING
       function handleResize() {
+        if (!logoRenderer || !logoCloudInitialized) return;
+        
         const width = container.clientWidth;
         const height = container.clientHeight;
         
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
+        logoRenderer.setSize(width, height);
       }
 
       window.addEventListener('resize', handleResize);
       
       // Initial resize call
       handleResize();
+    }
+
+    // Initialize logo cloud
+    function setupLogoInit() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLogoCloud);
+      } else {
+        initLogoCloud();
+      }
+    }
+
+    // Setup initial logo cloud
+    setupLogoInit();
+
+    // Handle Astro View Transitions
+    document.addEventListener('astro:before-swap', cleanupLogoCloud);
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(initLogoCloud, 100); // Small delay to ensure DOM is ready
     });
   </script>
 </WidgetWrapper>
