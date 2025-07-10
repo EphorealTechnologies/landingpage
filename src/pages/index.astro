@@ -1,7 +1,7 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
-import Hero from '~/components/widgets/Hero.astro';
+import HeroWith3DLogo from '~/components/widgets/HeroWith3DLogo.astro';
 import Note from '~/components/widgets/Note.astro';
 import Features from '~/components/widgets/Features.astro';
 import Features2 from '~/components/widgets/Features2.astro';
@@ -21,9 +21,9 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
+  <!-- Hero Widget with 3D Logo ******************* -->
 
-  <Hero
+  <HeroWith3DLogo
     <!actions={[
       {
         variant: 'primary',
@@ -35,6 +35,7 @@ const metadata = {
       { text: 'Learn more', href: '#features' },
     ]}>
     image={{ src: '~/assets/images/dataAnalysis.jpg', alt: 'AstroWind Hero Image' }}
+    modelPath="http://localhost:4321/src/assets/images/logo_ephoreal.glb"
   >
     <Fragment slot="title">
     Empowering enterprises with 
@@ -50,11 +51,11 @@ const metadata = {
     
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
-        <span class="font-semibold dark:text-white">Automate your decisions using AI</span> 
-        <br> Transform your data into gold,
-        <br> -we add value by cutting down inefficiencies, enhance your decision making skills and strategies.
+        <span class="font-semibold dark:text-white">Data → Insight → Action.</span> 
+        <br> We use AI to make your decisions faster and smarter.
+        <br> More clarity, less clutter.
     </Fragment>
-  </Hero>
+  </HeroWith3DLogo>
 
   <!-- Content Widget **************** -->
 

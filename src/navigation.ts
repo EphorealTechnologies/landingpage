@@ -106,7 +106,7 @@ export const footerData = {
     {
       title: 'Contact Us',
       links: [
-        { text: '<strong>Email:</strong> info@ephoreal.com', href: 'mailto:contact@ephoreal.com' },
+        { text: '<strong>Email:</strong> timoth@ephoreal.com', href: 'mailto:timoth@ephoreal.com' },
         { text: '<strong>Chat with us</strong>', href: getPermalink('/contact') },
         { text: "<strong>India Office:</strong> 2nd floor, 14, Rajaji Street, Sudhana Nagar, Nainarmandapam, Puducherry, India-605004 <strong>Contact:</strong> +91 97901 76084",
           href: "https://maps.app.goo.gl/c9XPSdQsRt1qCdrs9"

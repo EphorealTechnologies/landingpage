@@ -4,6 +4,7 @@ import Features3 from '~/components/widgets/Features3.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
+import Testimonials from '~/components/widgets/Testimonials.astro';
 import Layout from '~/layouts/PageLayout.astro';
 
 const metadata = {
@@ -56,6 +57,36 @@ const metadata = {
         title: 'Ethical Data Practices',
         description:
           'We are dedicated to maintaining the highest ethical standards in our data handling processes. Our focus on privacy and security ensures that your information is safeguarded while driving innovation and insight.',
+      },
+    ]}
+  />
+
+  <!-- Team Widget ****************** -->
+
+  <Testimonials
+    title="Meet Our Team"
+    subtitle="The talented individuals who drive innovation and deliver exceptional results for our clients"
+    classes={{
+      container: 'max-w-4xl mx-auto',
+    }}
+    testimonials={[
+      {
+        name: 'Timoth Dev',
+        job: 'Founder and CEO',
+        testimonial: 'Loves solving problems. Improving businesses with technology strategy is his forte. A mediocre husband, a good father, and yet to be a Sadhu.',
+        image: {
+          src: '~/assets/images/timoth-photo.jpg',
+          alt: 'Timoth Dev',
+        },
+      },
+      {
+        name: 'Kiruthiga A',
+        job: 'Principal Data Scientist',
+        testimonial: 'She figures things out when no one else can. Thrives on making optimal decisions under complexity. A devoted mother who loves travel and tapioca chips.',
+        image: {
+          src: '~/assets/images/kiruthiga-photo.jpg',
+          alt: 'Kiruthiga A',
+        },
       },
     ]}
   />

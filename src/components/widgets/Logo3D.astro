@@ -1,0 +1,201 @@
+---
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+
+const {
+  title = '',
+  subtitle = '',
+  tagline = '',
+  modelPath = '/src/assets/images/logo_ephoreal.glb',
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-6xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  {title || subtitle || tagline ? (
+    <div class="text-center mb-8">
+      {tagline && <p class="text-base text-secondary dark:text-blue-200 font-bold tracking-wide uppercase">{tagline}</p>}
+      {title && <h2 class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 font-heading">{title}</h2>}
+      {subtitle && <p class="max-w-3xl mx-auto text-xl text-muted dark:text-slate-400">{subtitle}</p>}
+    </div>
+  ) : null}
+
+  <!-- 3D Logo Container -->
+  <div id="logo3d-container" class="w-full h-96 relative bg-transparent">
+    <canvas id="logo3d-canvas" class="w-full h-full"></canvas>
+  </div>
+
+  <!-- Three.js Script -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.166.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" define:vars={{ modelPath }}>
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    let logo3DInitialized = false;
+    let logo3DRenderer = null;
+    let logo3DScene = null;
+    let logo3DControls = null;
+    let logo3DAnimationId = null;
+    let logo3DModel = null;
+
+    function cleanupLogo3D() {
+      if (logo3DAnimationId) {
+        cancelAnimationFrame(logo3DAnimationId);
+        logo3DAnimationId = null;
+      }
+      if (logo3DControls) {
+        logo3DControls.dispose();
+        logo3DControls = null;
+      }
+      if (logo3DRenderer) {
+        logo3DRenderer.dispose();
+        logo3DRenderer = null;
+      }
+      if (logo3DScene) {
+        logo3DScene.clear();
+        logo3DScene = null;
+      }
+      logo3DModel = null;
+      logo3DInitialized = false;
+    }
+
+    function initLogo3D() {
+      const container = document.getElementById('logo3d-container');
+      const canvas = document.getElementById('logo3d-canvas');
+      
+      if (!container || !canvas) return;
+
+      // Clean up any existing instance
+      cleanupLogo3D();
+      logo3DInitialized = true;
+
+      // 1. SCENE SETUP
+      logo3DScene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      logo3DRenderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true 
+      });
+      logo3DRenderer.setSize(container.clientWidth, container.clientHeight);
+      logo3DRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      logo3DRenderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      // 2. LIGHTING
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      logo3DScene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(5, 5, 5);
+      logo3DScene.add(directionalLight);
+
+      const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+      directionalLight2.position.set(-5, -5, -5);
+      logo3DScene.add(directionalLight2);
+
+      // 3. INITIALIZE ORBIT CONTROLS
+      logo3DControls = new OrbitControls(camera, logo3DRenderer.domElement);
+      logo3DControls.enableDamping = true;
+      logo3DControls.dampingFactor = 0.05;
+      logo3DControls.minDistance = 2;
+      logo3DControls.maxDistance = 10;
+      logo3DControls.autoRotate = true;
+      logo3DControls.autoRotateSpeed = 0.5; // Slow rotation
+      logo3DControls.enableZoom = false; // Disable scrolling/zooming
+      logo3DControls.enablePan = false; // Disable panning
+      
+      // 4. LOAD GLB MODEL
+      const loader = new GLTFLoader();
+      loader.load(
+        modelPath,
+        function (gltf) {
+          if (!logo3DInitialized) return; // Skip if component was cleaned up
+          
+          logo3DModel = gltf.scene;
+          
+          // Center and scale the model
+          const box = new THREE.Box3().setFromObject(logo3DModel);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3());
+          
+          // Center the model
+          logo3DModel.position.sub(center);
+          
+          // Scale the model to fit nicely in view
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const scale = 2 / maxDim;
+          logo3DModel.scale.setScalar(scale);
+          
+          logo3DScene.add(logo3DModel);
+          
+          console.log('3D Logo loaded successfully');
+        },
+        function (progress) {
+          console.log('Loading progress:', (progress.loaded / progress.total * 100) + '%');
+        },
+        function (error) {
+          console.error('Error loading 3D logo:', error);
+        }
+      );
+
+      // 5. SET CAMERA POSITION
+      camera.position.set(0, 0, 5);
+
+      // 6. ANIMATION LOOP
+      function animate() {
+        if (!logo3DInitialized) return; // Stop animation if cleaned up
+        
+        logo3DAnimationId = requestAnimationFrame(animate);
+        
+        if (logo3DControls) logo3DControls.update();
+        if (logo3DRenderer && logo3DScene) logo3DRenderer.render(logo3DScene, camera);
+      }
+      animate();
+
+      // 7. HANDLE WINDOW RESIZING
+      function handleResize() {
+        if (!logo3DRenderer || !logo3DInitialized) return;
+        
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        logo3DRenderer.setSize(width, height);
+      }
+
+      window.addEventListener('resize', handleResize);
+      
+      // Initial resize call
+      handleResize();
+    }
+
+    // Initialize 3D logo
+    function setupLogo3DInit() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLogo3D);
+      } else {
+        initLogo3D();
+      }
+    }
+
+    // Setup initial 3D logo
+    setupLogo3DInit();
+
+    // Handle Astro View Transitions
+    document.addEventListener('astro:before-swap', cleanupLogo3D);
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(initLogo3D, 100); // Small delay to ensure DOM is ready
+    });
+  </script>
+</WidgetWrapper> 

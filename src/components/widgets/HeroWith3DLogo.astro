@@ -1,0 +1,256 @@
+---
+import Image from '~/components/common/Image.astro';
+import Button from '~/components/ui/Button.astro';
+
+import type { Hero as Props } from '~/types';
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline,
+
+  content = await Astro.slots.render('content'),
+  actions = await Astro.slots.render('actions'),
+  image = await Astro.slots.render('image'),
+  modelPath = 'http://localhost:4321/src/assets/images/logo_ephoreal.glb',
+
+  id,
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+---
+
+<section class="relative md:-mt-[76px] not-prose" {...id ? { id } : {}}>
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <slot name="bg">
+      {bg ? <Fragment set:html={bg} /> : null}
+    </slot>
+  </div>
+
+  <!-- 3D Logo Background Container -->
+  <div class="absolute inset-0 pointer-events-none z-0">
+    <div id="hero-logo3d-container" class="w-full h-full">
+      <canvas id="hero-logo3d-canvas" class="w-full h-full opacity-30"></canvas>
+    </div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 z-10">
+    <div class="pt-0 md:pt-[76px] pointer-events-none"></div>
+    <div class="py-12 md:py-20">
+      <div class="text-center pb-10 md:pb-16 max-w-5xl mx-auto">
+        {
+          tagline && (
+            <p
+              class="text-base text-secondary dark:text-blue-200 font-bold tracking-wide uppercase"
+              set:html={tagline}
+            />
+          )
+        }
+        {
+          title && (
+            <h1
+              class="text-5xl md:text-6xl font-bold leading-tighter tracking-tighter mb-4 font-heading dark:text-gray-200 relative z-10"
+              set:html={title}
+            />
+          )
+        }
+        <div class="max-w-3xl mx-auto">
+          {subtitle && <p class="text-xl text-muted mb-6 dark:text-slate-300 relative z-10" set:html={subtitle} />}
+          {
+            actions && (
+              <div class="max-w-xs sm:max-w-md m-auto flex flex-nowrap flex-col sm:flex-row sm:justify-center gap-4 relative z-10">
+                {Array.isArray(actions) ? (
+                  actions.map((action) => (
+                    <div class="flex w-full sm:w-auto">
+                      <Button {...(action || {})} class="w-full sm:mb-0" />
+                    </div>
+                  ))
+                ) : (
+                  <Fragment set:html={actions} />
+                )}
+              </div>
+            )
+          }
+        </div>
+        {content && <Fragment set:html={content} />}
+      </div>
+      <div>
+        {
+          image && (
+            <div class="relative m-auto max-w-5xl z-10">
+              {typeof image === 'string' ? (
+                <Fragment set:html={image} />
+              ) : (
+                <Image
+                  class="mx-auto rounded-md w-full"
+                  widths={[400, 768, 1024, 2040]}
+                  sizes="(max-width: 767px) 400px, (max-width: 1023px) 768px, (max-width: 2039px) 1024px, 2040px"
+                  loading="eager"
+                  width={1024}
+                  height={576}
+                  {...image}
+                />
+              )}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js Script for 3D Logo -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.166.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" define:vars={{ modelPath }}>
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    let heroLogo3DInitialized = false;
+    let heroLogo3DRenderer = null;
+    let heroLogo3DScene = null;
+    let heroLogo3DAnimationId = null;
+    let heroLogo3DModel = null;
+
+    function cleanupHeroLogo3D() {
+      if (heroLogo3DAnimationId) {
+        cancelAnimationFrame(heroLogo3DAnimationId);
+        heroLogo3DAnimationId = null;
+      }
+      if (heroLogo3DRenderer) {
+        heroLogo3DRenderer.dispose();
+        heroLogo3DRenderer = null;
+      }
+      if (heroLogo3DScene) {
+        heroLogo3DScene.clear();
+        heroLogo3DScene = null;
+      }
+      heroLogo3DModel = null;
+      heroLogo3DInitialized = false;
+    }
+
+    function initHeroLogo3D() {
+      const container = document.getElementById('hero-logo3d-container');
+      const canvas = document.getElementById('hero-logo3d-canvas');
+      
+      if (!container || !canvas) return;
+
+      // Clean up any existing instance
+      cleanupHeroLogo3D();
+      heroLogo3DInitialized = true;
+
+      // 1. SCENE SETUP
+      heroLogo3DScene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      heroLogo3DRenderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true 
+      });
+      heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
+      heroLogo3DRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      heroLogo3DRenderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      // 2. LIGHTING
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      heroLogo3DScene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+      directionalLight.position.set(5, 5, 5);
+      heroLogo3DScene.add(directionalLight);
+
+      // 3. LOAD GLB MODEL
+      const loader = new GLTFLoader();
+      loader.load(
+        modelPath,
+        function (gltf) {
+          if (!heroLogo3DInitialized) return; // Skip if component was cleaned up
+          
+          heroLogo3DModel = gltf.scene;
+          
+          // Center and scale the model
+          const box = new THREE.Box3().setFromObject(heroLogo3DModel);
+          const center = box.getCenter(new THREE.Vector3());
+          const size = box.getSize(new THREE.Vector3());
+          
+          // Center the model
+          heroLogo3DModel.position.sub(center);
+          
+          // Scale the model to be large but subtle in background
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const scale = 8 / maxDim; // Larger scale for background effect
+          heroLogo3DModel.scale.setScalar(scale);
+          
+          // Position slightly behind the center
+          heroLogo3DModel.position.z = -2;
+          
+          heroLogo3DScene.add(heroLogo3DModel);
+          
+          console.log('Hero 3D Logo loaded successfully');
+        },
+        function (progress) {
+          console.log('Hero logo loading progress:', (progress.loaded / progress.total * 100) + '%');
+        },
+        function (error) {
+          console.error('Error loading hero 3D logo:', error);
+        }
+      );
+
+      // 4. SET CAMERA POSITION
+      camera.position.set(0, 0, 8);
+
+      // 5. ANIMATION LOOP - Slow rotation
+      function animate() {
+        if (!heroLogo3DInitialized) return; // Stop animation if cleaned up
+        
+        heroLogo3DAnimationId = requestAnimationFrame(animate);
+        
+        // Slow Y-axis rotation
+        if (heroLogo3DModel) {
+          heroLogo3DModel.rotation.y += 0.002;
+        }
+        
+        if (heroLogo3DRenderer && heroLogo3DScene) {
+          heroLogo3DRenderer.render(heroLogo3DScene, camera);
+        }
+      }
+      animate();
+
+      // 6. HANDLE WINDOW RESIZING
+      function handleResize() {
+        if (!heroLogo3DRenderer || !heroLogo3DInitialized) return;
+        
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      window.addEventListener('resize', handleResize);
+      
+      // Initial resize call
+      handleResize();
+    }
+
+    // Initialize 3D logo
+    function setupHeroLogo3DInit() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeroLogo3D);
+      } else {
+        initHeroLogo3D();
+      }
+    }
+
+    // Setup initial 3D logo
+    setupHeroLogo3DInit();
+
+    // Handle Astro View Transitions
+    document.addEventListener('astro:before-swap', cleanupHeroLogo3D);
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(initHeroLogo3D, 100); // Small delay to ensure DOM is ready
+    });
+  </script>
+</section> 
