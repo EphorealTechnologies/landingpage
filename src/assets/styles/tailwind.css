@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  /* Disable text selection across the website */
-  * {
+  /* Disable text selection only for UI elements where it's not desired */
+  button, .btn, nav, .dropdown, [data-aw-toggle-menu], .btn-primary, .btn-secondary, .btn-tertiary {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -13,8 +13,8 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Re-enable text selection for input fields and content areas where needed */
-  input, textarea, [contenteditable="true"] {
+  /* Ensure text selection is enabled for content areas */
+  p, h1, h2, h3, h4, h5, h6, span, div, article, section, main, input, textarea, [contenteditable="true"], blockquote {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
