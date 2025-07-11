@@ -128,7 +128,7 @@ export const footerData = {
       title: 'Company',
       links: [
         { text: 'About', href: '/about' },
-        { text: 'Blog', href: '/blog' },
+        // { text: 'Blog', href: '/blog' },
         { text:"LinkedIn", icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/ephoreal-technologies/' },
         { text:"X",icon: 'tabler:brand-X', href: 'https://www.X.com/EphorealTech' },
         // { text: 'X', href: '#' },
