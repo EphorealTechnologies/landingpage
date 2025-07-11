@@ -74,6 +74,17 @@ const {
             <div class="relative m-auto max-w-4xl">
               {typeof image === 'string' ? (
                 <Fragment set:html={image} />
+              ) : image.src && image.src.endsWith('.json') ? (
+                <div class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg">
+                  <lottie-player
+                    src={image.src}
+                    background="transparent"
+                    speed="1"
+                    style="width: 100%; height: 400px;"
+                    loop
+                    autoplay
+                  ></lottie-player>
+                </div>
               ) : (
                 <Image
                   class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg"
