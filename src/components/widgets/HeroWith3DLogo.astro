@@ -154,14 +154,34 @@ const {
       heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
       heroLogo3DRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       heroLogo3DRenderer.outputColorSpace = THREE.SRGBColorSpace;
+      
+      // Add environment map for metallic reflections
+      const pmremGenerator = new THREE.PMREMGenerator(heroLogo3DRenderer);
+      const envTexture = pmremGenerator.fromScene(new THREE.Scene()).texture;
+      heroLogo3DScene.environment = envTexture;
+      heroLogo3DScene.background = null; // Keep transparent background
 
-      // 2. LIGHTING
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      // 2. LIGHTING - Enhanced for metallic effect
       heroLogo3DScene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-      directionalLight.position.set(5, 5, 5);
+      // Main directional light
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 4);
+      directionalLight.position.set(0, 5, 5);
       heroLogo3DScene.add(directionalLight);
+
+      // Additional lights for metallic shine
+      const pointLight1 = new THREE.PointLight(0xffffff, 4);
+      pointLight1.position.set(-3, 2, 3);
+      heroLogo3DScene.add(pointLight1);
+
+      const pointLight2 = new THREE.PointLight(0xffffff, 4);
+      pointLight2.position.set(3, -2, -3);
+      heroLogo3DScene.add(pointLight2);
+
+      // Rim light for metallic edge highlighting
+      const rimLight = new THREE.DirectionalLight(0xffffff, 4);
+      rimLight.position.set(-2, 0, -5);
+      heroLogo3DScene.add(rimLight);
 
       // 3. LOAD GLB MODEL
       const loader = new GLTFLoader();
@@ -171,6 +191,23 @@ const {
           if (!heroLogo3DInitialized) return; // Skip if component was cleaned up
           
           heroLogo3DModel = gltf.scene;
+          
+          // Apply metallic materials to all meshes
+          heroLogo3DModel.traverse((child) => {
+            if (child.isMesh) {
+              // Create metallic material
+              const metallicMaterial = new THREE.MeshStandardMaterial({
+                color: 0x888888, // Metallic gray color
+                metalness: 0.9,  // High metalness for metallic look
+                roughness: 0.8,  // Low roughness for shiny surface
+                envMapIntensity: 0.8,
+                clearcoat: 0.8,  // Add clearcoat for extra shine
+                clearcoatRoughness: 0.8
+              });
+              
+              child.material = metallicMaterial;
+            }
+          });
           
           // Center and scale the model
           const box = new THREE.Box3().setFromObject(heroLogo3DModel);
