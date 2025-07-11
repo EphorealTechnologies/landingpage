@@ -134,10 +134,14 @@ const {
     }
 
     function initHeroLogo3D() {
+      console.log('Initializing 3D logo with modelPath:', modelPath);
       const container = document.getElementById('hero-logo3d-container');
       const canvas = document.getElementById('hero-logo3d-canvas');
       
-      if (!container || !canvas) return;
+      if (!container || !canvas) {
+        console.error('Container or canvas not found');
+        return;
+      }
 
       // Clean up any existing instance
       cleanupHeroLogo3D();
@@ -154,42 +158,72 @@ const {
       heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
       heroLogo3DRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       heroLogo3DRenderer.outputColorSpace = THREE.SRGBColorSpace;
+      
+      // Add environment map for metallic reflections
+      const pmremGenerator = new THREE.PMREMGenerator(heroLogo3DRenderer);
+      const envTexture = pmremGenerator.fromScene(new THREE.Scene()).texture;
+      heroLogo3DScene.environment = envTexture;
+      heroLogo3DScene.background = null;
 
-      // 2. LIGHTING
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      // LIGHTING
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
       heroLogo3DScene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-      directionalLight.position.set(5, 5, 5);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      directionalLight.position.set(0, 5, 5);
       heroLogo3DScene.add(directionalLight);
 
-      // 3. LOAD GLB MODEL
+      const pointLight1 = new THREE.PointLight(0xffffff, 0.9);
+      pointLight1.position.set(-3, 2, 3);
+      heroLogo3DScene.add(pointLight1);
+
+      const pointLight2 = new THREE.PointLight(0xffffff, 0.9);
+      pointLight2.position.set(3, -2, -3);
+      heroLogo3DScene.add(pointLight2);
+
+      const rimLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      rimLight.position.set(-2, 0, -5);
+      heroLogo3DScene.add(rimLight);
+
+      // LOAD GLB MODEL
+      console.log('Loading GLB model from:', modelPath);
       const loader = new GLTFLoader();
       loader.load(
         modelPath,
         function (gltf) {
-          if (!heroLogo3DInitialized) return; // Skip if component was cleaned up
-          
+          if (!heroLogo3DInitialized) return;
+
           heroLogo3DModel = gltf.scene;
-          
-          // Center and scale the model
+
+          // ✅ Enhanced metallic material here
+          heroLogo3DModel.traverse((child) => {
+            if (child.isMesh) {
+              child.material = new THREE.MeshPhysicalMaterial({
+                color: 0xaaaaaa,
+                metalness: 1.0,
+                roughness: 0.25,
+                envMap: envTexture,
+                envMapIntensity: 1.2,
+                clearcoat: 1.0,
+                clearcoatRoughness: 0.05,
+                reflectivity: 0.5
+              });
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+
+          // Center and scale model
           const box = new THREE.Box3().setFromObject(heroLogo3DModel);
           const center = box.getCenter(new THREE.Vector3());
           const size = box.getSize(new THREE.Vector3());
-          
-          // Center the model
           heroLogo3DModel.position.sub(center);
-          
-          // Scale the model to be large but subtle in background
           const maxDim = Math.max(size.x, size.y, size.z);
-          const scale = 10 / maxDim; // Larger scale for background effect
+          const scale = 8 / maxDim;
           heroLogo3DModel.scale.setScalar(scale);
-          
-          // Position slightly behind the center
           heroLogo3DModel.position.z = -5;
-          
           heroLogo3DScene.add(heroLogo3DModel);
-          
+
           console.log('Hero 3D Logo loaded successfully');
         },
         function (progress) {
@@ -200,42 +234,34 @@ const {
         }
       );
 
-      // 4. SET CAMERA POSITION
-      camera.position.set(0, 0, 13);
+      // CAMERA POSITION
+      camera.position.set(0, 0, 12);
 
-      // 5. ANIMATION LOOP - Slow rotation
+      // ANIMATION LOOP
       function animate() {
-        if (!heroLogo3DInitialized) return; // Stop animation if cleaned up
-        
+        if (!heroLogo3DInitialized) return;
         heroLogo3DAnimationId = requestAnimationFrame(animate);
-        
-        // Slow Y-axis rotation
         if (heroLogo3DModel) {
           heroLogo3DModel.rotation.y += 0.01;
         }
-        
         if (heroLogo3DRenderer && heroLogo3DScene) {
           heroLogo3DRenderer.render(heroLogo3DScene, camera);
         }
       }
       animate();
 
-      // 6. HANDLE WINDOW RESIZING
+      // RESIZE HANDLER
       function handleResize() {
         if (!heroLogo3DRenderer || !heroLogo3DInitialized) return;
-        
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
       }
 
       window.addEventListener('resize', handleResize);
-      
-      // Initial resize call
       handleResize();
     }
 
-    // Initialize 3D logo
     function setupHeroLogo3DInit() {
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initHeroLogo3D);
@@ -244,13 +270,10 @@ const {
       }
     }
 
-    // Setup initial 3D logo
     setupHeroLogo3DInit();
-
-    // Handle Astro View Transitions
     document.addEventListener('astro:before-swap', cleanupHeroLogo3D);
     document.addEventListener('astro:after-swap', () => {
-      setTimeout(initHeroLogo3D, 100); // Small delay to ensure DOM is ready
+      setTimeout(initHeroLogo3D, 100);
     });
   </script>
-</section> 
+</section>
