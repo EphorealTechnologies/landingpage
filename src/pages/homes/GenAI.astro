@@ -143,8 +143,15 @@ const metadata = {
 
   <!-- Call to Action Widget -->
   <CallToAction
-    title="Ready to Transform Your Business with Generative AI?"
-    subtitle="Contact us today to learn how our generative AI solutions can enhance your business intelligence and automation capabilities."
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Contact Us',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
   >
     <Fragment slot="title">Ready to Transform Your Business with Generative AI?</Fragment>
     <Fragment slot="subtitle">

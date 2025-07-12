@@ -7,7 +7,7 @@ export const headerData = {
       links: [
         {
           text: 'Strategic Consult',
-          href: getPermalink('/homes/Consult'),
+          href: getPermalink('/strategic-consult'),
         },
         {
           text: 'Data Engineering',
@@ -84,7 +84,7 @@ export const footerData = {
     {
       title: 'Services',
       links: [
-        { text: 'Strategic consult', href: '/homes/Consult' },
+        { text: 'Strategic consult', href: '/strategic-consult' },
         // { text: 'GenAI', href: '/homes/GenAI' },
         { text: 'Data Engineering', href: '/homes/dataEngineering' },
         { text: 'Machine Learning', href: '/homes/dataScience' },
