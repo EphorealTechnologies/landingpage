@@ -45,7 +45,7 @@ const metadata = {
       {
         title: 'Prioritize',
         description:
-          'We prioritize business problems to solve based on alignment with business value in terms of time savings or increased revenue generation.',
+          'We prioritize business problems to solve based on alignment with business value in terms of time savings or increased revenue generation.    ',
       },
       {
         title: 'Design',
@@ -75,14 +75,21 @@ const metadata = {
   </Content>
 
   <!-- Call to Action Widget **************** -->
-
   <CallToAction
-    title="Ready to transform your business?"
-    subtitle="Let's discuss how our strategic consulting approach can help you achieve your goals."
-    callToAction={{
-      text: 'Get Started',
-      href: '/contact',
-      icon: 'tabler:arrow-right',
-    }}
-  />
+    actions={[
+      {
+        variant: 'primary',
+        target: '_blank',
+        text: 'Contact Us',
+        href: '/contact',
+        icon: 'tabler:phone',
+      },
+    ]}
+  >
+    <Fragment slot="title">Ready to transform your business?</Fragment>
+    <Fragment slot="subtitle">
+      Let's discuss how our strategic consulting approach can help you achieve your goals.
+    </Fragment>
+  </CallToAction>
+
 </Layout> 
