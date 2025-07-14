@@ -9,6 +9,49 @@ import { UI } from 'astrowind:config';
 
   window.basic_script = true;
 
+  // Global 3D components coordination
+  window.astro3DComponents = window.astro3DComponents || {
+    isNavigating: false,
+    pendingInits: new Set(),
+    
+    scheduleInit: function(componentName, initFn) {
+      this.pendingInits.add({ name: componentName, init: initFn });
+      if (!this.isNavigating) {
+        this.executePendingInits();
+      }
+    },
+    
+    executePendingInits: function() {
+      const inits = Array.from(this.pendingInits);
+      this.pendingInits.clear();
+      inits.forEach(({ init }) => {
+        try {
+          init();
+        } catch (error) {
+          console.error('Failed to initialize 3D component:', error);
+        }
+      });
+    },
+    
+    startNavigation: function() {
+      this.isNavigating = true;
+    },
+    
+    endNavigation: function() {
+      this.isNavigating = false;
+      setTimeout(() => this.executePendingInits(), 300);
+    }
+  };
+
+  // Handle global navigation state
+  document.addEventListener('astro:before-swap', () => {
+    window.astro3DComponents.startNavigation();
+  });
+  
+  document.addEventListener('astro:after-swap', () => {
+    window.astro3DComponents.endNavigation();
+  });
+
   function applyTheme(theme) {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -293,9 +336,27 @@ import { UI } from 'astrowind:config';
   // Setup initial stars
   setupStarsInit();
 
-  // Clean up and reinitialize on page navigation
+  // Clean up and reinitialize on page navigation - improved timing and cleanup
+  function handleStarsNavigation() {
+    cleanupStars();
+    // Longer timeout and ensure DOM is ready
+    setTimeout(() => {
+      if (document.getElementById('stars-background') && document.getElementById('stars-canvas')) {
+        initStars();
+      }
+    }, 250);
+  }
+
   document.addEventListener('astro:before-swap', cleanupStars);
-  document.addEventListener('astro:after-swap', () => {
-    setTimeout(initStars, 100); // Small delay to ensure DOM is ready
+  document.addEventListener('astro:after-swap', handleStarsNavigation);
+  
+  // Also handle page load events for better reliability
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!starsInitialized) {
+      initStars();
+    }
   });
+  
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', cleanupStars);
 </script>

@@ -192,10 +192,28 @@ const {
     // Setup initial 3D logo
     setupLogo3DInit();
 
-    // Handle Astro View Transitions
+    // Handle Astro View Transitions - improved timing and cleanup
+    function handleNavigation() {
+      cleanupLogo3D();
+      // Longer timeout and ensure DOM is ready
+      setTimeout(() => {
+        if (document.getElementById('logo3d-container') && document.getElementById('logo3d-canvas')) {
+          initLogo3D();
+        }
+      }, 250);
+    }
+
     document.addEventListener('astro:before-swap', cleanupLogo3D);
-    document.addEventListener('astro:after-swap', () => {
-      setTimeout(initLogo3D, 100); // Small delay to ensure DOM is ready
+    document.addEventListener('astro:after-swap', handleNavigation);
+    
+    // Also handle page load events for better reliability
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!logo3DInitialized) {
+        initLogo3D();
+      }
     });
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', cleanupLogo3D);
   </script>
 </WidgetWrapper> 
