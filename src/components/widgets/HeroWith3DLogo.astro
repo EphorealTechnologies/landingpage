@@ -271,38 +271,9 @@ const {
     }
 
     setupHeroLogo3DInit();
-    
-    // Handle Astro View Transitions using global coordination
-    function handleNavigation() {
-      cleanupHeroLogo3D();
-      // Use global coordination system to prevent conflicts
-      if (window.astro3DComponents) {
-        window.astro3DComponents.scheduleInit('heroLogo3D', () => {
-          if (document.getElementById('hero-logo3d-container') && document.getElementById('hero-logo3d-canvas')) {
-            initHeroLogo3D();
-          }
-        });
-      } else {
-        // Fallback if global system not available
-        setTimeout(() => {
-          if (document.getElementById('hero-logo3d-container') && document.getElementById('hero-logo3d-canvas')) {
-            initHeroLogo3D();
-          }
-        }, 250);
-      }
-    }
-
     document.addEventListener('astro:before-swap', cleanupHeroLogo3D);
-    document.addEventListener('astro:after-swap', handleNavigation);
-    
-    // Also handle page load events for better reliability
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!heroLogo3DInitialized) {
-        initHeroLogo3D();
-      }
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(initHeroLogo3D, 100);
     });
-    
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', cleanupHeroLogo3D);
   </script>
 </section>

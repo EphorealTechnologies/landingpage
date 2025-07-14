@@ -195,28 +195,10 @@ const {
     // Setup initial logo cloud
     setupLogoInit();
 
-    // Handle Astro View Transitions - improved timing and cleanup
-    function handleNavigation() {
-      cleanupLogoCloud();
-      // Longer timeout and ensure DOM is ready
-      setTimeout(() => {
-        if (document.getElementById('logo-cloud-container') && document.getElementById('logo-cloud-canvas')) {
-          initLogoCloud();
-        }
-      }, 250);
-    }
-
+    // Handle Astro View Transitions
     document.addEventListener('astro:before-swap', cleanupLogoCloud);
-    document.addEventListener('astro:after-swap', handleNavigation);
-    
-    // Also handle page load events for better reliability
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!logoCloudInitialized) {
-        initLogoCloud();
-      }
+    document.addEventListener('astro:after-swap', () => {
+      setTimeout(initLogoCloud, 100); // Small delay to ensure DOM is ready
     });
-    
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', cleanupLogoCloud);
   </script>
 </WidgetWrapper>
