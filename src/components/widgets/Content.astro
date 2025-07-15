@@ -85,13 +85,41 @@ const {
                     autoplay
                   ></lottie-player>
                   <script>
-                    // Fallback if lottie-player doesn't load
-                    if (typeof window !== 'undefined' && !window.customElements.get('lottie-player')) {
-                      console.warn('Lottie player not available, loading script...');
+                    // Smart lottie-player loading to prevent conflicts
+                    (function() {
+                      if (typeof window === 'undefined') return;
+                      
+                      // Check if lottie-player is already defined or being loaded
+                      if (window.customElements.get('lottie-player')) {
+                        return; // Already defined
+                      }
+                      
+                      // Check if script is already loading
+                      if (window.lottiePlayerLoading) {
+                        return; // Already loading
+                      }
+                      
+                      // Check if script already exists in DOM
+                      const existingScript = document.querySelector('script[src*="lottie-player"]');
+                      if (existingScript) {
+                        return; // Script already exists
+                      }
+                      
+                      console.log('Loading lottie-player script...');
+                      window.lottiePlayerLoading = true;
+                      
                       const script = document.createElement('script');
                       script.src = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
+                      script.onload = () => {
+                        window.lottiePlayerLoading = false;
+                        console.log('Lottie player loaded successfully');
+                      };
+                      script.onerror = () => {
+                        window.lottiePlayerLoading = false;
+                        console.error('Failed to load lottie-player');
+                      };
                       document.head.appendChild(script);
-                    }
+                    })();
                   </script>
                 </div>
               ) : (

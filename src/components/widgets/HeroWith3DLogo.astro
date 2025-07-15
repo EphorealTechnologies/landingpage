@@ -27,9 +27,9 @@ const {
   </div>
 
   <!-- 3D Logo Background Container -->
-  <div class="absolute inset-0 pointer-events-none z-0">
-    <div id="hero-logo3d-container" class="w-full h-full">
-      <canvas id="hero-logo3d-canvas" class="w-full h-full opacity-30"></canvas>
+  <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+    <div id="hero-logo3d-container" class="w-full h-full relative">
+      <canvas id="hero-logo3d-canvas" class="absolute top-0 left-0 w-full h-full opacity-20 md:opacity-30"></canvas>
     </div>
   </div>
 
@@ -147,15 +147,16 @@ const {
         cleanupHeroLogo3D();
         heroLogo3DInitialized = true;
 
-        // 1. SCENE SETUP
+                // 1. SCENE SETUP
         heroLogo3DScene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      heroLogo3DRenderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true,
-        alpha: true 
-      });
-      heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
+        const containerRect = container.getBoundingClientRect();
+        const camera = new THREE.PerspectiveCamera(75, containerRect.width / containerRect.height, 0.1, 1000);
+        heroLogo3DRenderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: true,
+          alpha: true 
+        });
+        heroLogo3DRenderer.setSize(containerRect.width, containerRect.height);
       heroLogo3DRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       heroLogo3DRenderer.outputColorSpace = THREE.SRGBColorSpace;
       
@@ -213,15 +214,22 @@ const {
             }
           });
 
-          // Center and scale model
+          // Center and scale model with responsive sizing
           const box = new THREE.Box3().setFromObject(heroLogo3DModel);
           const center = box.getCenter(new THREE.Vector3());
           const size = box.getSize(new THREE.Vector3());
           heroLogo3DModel.position.sub(center);
           const maxDim = Math.max(size.x, size.y, size.z);
-          const scale = 8 / maxDim;
+          
+          // Responsive scaling based on viewport
+          const isMobile = window.innerWidth < 768;
+          const baseScale = isMobile ? 6 : 8;
+          const scale = baseScale / maxDim;
           heroLogo3DModel.scale.setScalar(scale);
-          heroLogo3DModel.position.z = -5;
+          
+          // Adjust position for mobile
+          heroLogo3DModel.position.z = isMobile ? -3 : -5;
+          heroLogo3DModel.position.y = isMobile ? 0 : 0;
           heroLogo3DScene.add(heroLogo3DModel);
 
           console.log('Hero 3D Logo loaded successfully');
@@ -234,8 +242,9 @@ const {
         }
       );
 
-      // CAMERA POSITION
-      camera.position.set(0, 0, 12);
+              // CAMERA POSITION - responsive for mobile
+        const isMobile = window.innerWidth < 768;
+        camera.position.set(0, 0, isMobile ? 10 : 12);
 
       // ANIMATION LOOP
       function animate() {
@@ -250,15 +259,33 @@ const {
       }
       animate();
 
-      // RESIZE HANDLER
-      function handleResize() {
-        if (!heroLogo3DRenderer || !heroLogo3DInitialized) return;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
-      }
+              // RESIZE HANDLER
+        function handleResize() {
+          if (!heroLogo3DRenderer || !heroLogo3DInitialized) return;
+          const containerRect = container.getBoundingClientRect();
+          if (containerRect.width > 0 && containerRect.height > 0) {
+            camera.aspect = containerRect.width / containerRect.height;
+            camera.updateProjectionMatrix();
+            heroLogo3DRenderer.setSize(containerRect.width, containerRect.height);
+          }
+        }
 
+        // Set up resize handlers
         window.addEventListener('resize', handleResize);
+        
+        // Use ResizeObserver for more accurate container size tracking
+        if (window.ResizeObserver) {
+          const resizeObserver = new ResizeObserver(handleResize);
+          resizeObserver.observe(container);
+          
+          // Clean up observer when component is destroyed
+          const originalCleanup = window.cleanupHeroLogo3D || cleanupHeroLogo3D;
+          window.cleanupHeroLogo3D = function() {
+            resizeObserver.disconnect();
+            originalCleanup();
+          };
+        }
+        
         handleResize();
         
       } catch (error) {
@@ -267,10 +294,15 @@ const {
     }
 
     function setupHeroLogo3DInit() {
+      const isMobile = window.innerWidth < 768;
+      const delay = isMobile ? 200 : 0; // Add small delay for mobile
+      
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => initHeroLogo3D().catch(console.error));
+        document.addEventListener('DOMContentLoaded', () => {
+          setTimeout(() => initHeroLogo3D().catch(console.error), delay);
+        });
       } else {
-        initHeroLogo3D().catch(console.error);
+        setTimeout(() => initHeroLogo3D().catch(console.error), delay);
       }
     }
 
