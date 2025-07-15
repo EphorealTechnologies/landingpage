@@ -98,17 +98,14 @@ const {
   </div>
 
   <!-- Three.js Script for 3D Logo -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.166.1/examples/jsm/"
-      }
-    }
-  </script>
   <script type="module" define:vars={{ modelPath }}>
-    import * as THREE from 'three';
-    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    async function loadThreeJS() {
+      const [THREE, { GLTFLoader }] = await Promise.all([
+        import('https://unpkg.com/three@0.166.1/build/three.module.js'),
+        import('https://unpkg.com/three@0.166.1/examples/jsm/loaders/GLTFLoader.js')
+      ]);
+      return { THREE, GLTFLoader };
+    }
 
     let heroLogo3DInitialized = false;
     let heroLogo3DRenderer = null;
@@ -133,7 +130,7 @@ const {
       heroLogo3DInitialized = false;
     }
 
-    function initHeroLogo3D() {
+    async function initHeroLogo3D() {
       console.log('Initializing 3D logo with modelPath:', modelPath);
       const container = document.getElementById('hero-logo3d-container');
       const canvas = document.getElementById('hero-logo3d-canvas');
@@ -143,12 +140,15 @@ const {
         return;
       }
 
-      // Clean up any existing instance
-      cleanupHeroLogo3D();
-      heroLogo3DInitialized = true;
+      try {
+        const { THREE, GLTFLoader } = await loadThreeJS();
+        
+        // Clean up any existing instance
+        cleanupHeroLogo3D();
+        heroLogo3DInitialized = true;
 
-      // 1. SCENE SETUP
-      heroLogo3DScene = new THREE.Scene();
+        // 1. SCENE SETUP
+        heroLogo3DScene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       heroLogo3DRenderer = new THREE.WebGLRenderer({
         canvas: canvas,
@@ -185,9 +185,9 @@ const {
       rimLight.position.set(-2, 0, -5);
       heroLogo3DScene.add(rimLight);
 
-      // LOAD GLB MODEL
-      console.log('Loading GLB model from:', modelPath);
-      const loader = new GLTFLoader();
+        // LOAD GLB MODEL
+        console.log('Loading GLB model from:', modelPath);
+        const loader = new GLTFLoader();
       loader.load(
         modelPath,
         function (gltf) {
@@ -258,22 +258,26 @@ const {
         heroLogo3DRenderer.setSize(window.innerWidth, window.innerHeight);
       }
 
-      window.addEventListener('resize', handleResize);
-      handleResize();
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        
+      } catch (error) {
+        console.error('Failed to load Three.js or initialize 3D logo:', error);
+      }
     }
 
     function setupHeroLogo3DInit() {
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHeroLogo3D);
+        document.addEventListener('DOMContentLoaded', () => initHeroLogo3D().catch(console.error));
       } else {
-        initHeroLogo3D();
+        initHeroLogo3D().catch(console.error);
       }
     }
 
     setupHeroLogo3DInit();
     document.addEventListener('astro:before-swap', cleanupHeroLogo3D);
     document.addEventListener('astro:after-swap', () => {
-      setTimeout(initHeroLogo3D, 100);
+      setTimeout(() => initHeroLogo3D().catch(console.error), 100);
     });
   </script>
 </section>
