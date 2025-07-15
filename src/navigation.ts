@@ -149,6 +149,6 @@ export const footerData = {
   ],
   footNote: `
     <img class="w-5 h-5 md:w-6 md:h-6 md:-mt-0.5 bg-cover mr-1.5 rtl:mr-0 rtl:ml-1.5 float-left rtl:float-right rounded-sm" src="https://res.cloudinary.com/dgpcn8e7x/image/upload/v1728810916/Logo_hlpksp.svg"  alt="Ephoreal Technologies logo" loading="lazy"></img>
-    ©2024 by Ephoreal Technologies. All Rights Reserved.
+    ©${new Date().getFullYear()} by Ephoreal Technologies. All Rights Reserved.
   `,
 };
