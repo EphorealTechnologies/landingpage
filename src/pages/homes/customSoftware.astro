@@ -7,7 +7,7 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Image from '~/components/common/Image.astro';
 
-const customSoftwareHeroImage = "~/assets/images/MLOPS2.jpg";
+const customSoftwareHeroImage = "/softwareDeveloper.json";
 
 const metadata = {
   title: 'Custom Software Development Services for Business Growth',
@@ -19,6 +19,7 @@ const metadata = {
   <!-- Hero Widget -->
   <Hero
     tagline="Transform Your Business with Custom Software"
+    image={{ src: customSoftwareHeroImage, alt: 'Software Developer Animation' }}
   >
     <Fragment slot="title">
       Empower Your <span class="text-accent dark:text-white highlight disableCaret">Digital Transformation</span> with Custom Software Development
@@ -26,10 +27,6 @@ const metadata = {
 
     <Fragment slot="subtitle">
       Unlock the full potential of your business with our cutting-edge custom web and mobile applications designed to streamline operations and drive growth.
-    </Fragment>
-
-    <Fragment slot="image">
-      <Image src={customSoftwareHeroImage} alt="Custom Software Development" class="mx-auto max-w-full" />
     </Fragment>
   </Hero>
 

@@ -8,7 +8,7 @@ import FAQs from '~/components/widgets/FAQs.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Image from '~/components/common/Image.astro';
 
-const genAIHeroImage = "~/assets/images/MLOPS.jpg";
+const genAIHeroImage = "/genAI.json";
 
 const metadata = {
   title: 'Generative AI Services for Intelligent Business Solutions',
@@ -22,10 +22,8 @@ const metadata = {
     tagline="Unlock the Power of Generative AI"
     title="Empower Your <span class='text-accent dark:text-white highlight disableCaret'>Business Intelligence</span> with Generative AI"
     subtitle="Leverage advanced AI technologies including RAG, fine-tuning, MCP integration, and custom agents to create intelligent, context-aware solutions that drive innovation and efficiency."
-    image={{ src: genAIHeroImage, alt: 'Generative AI' }}
-  >
-    <Image src={genAIHeroImage} alt="Generative AI" width=600 class="mx-auto max-w-full" />
-  </Hero>
+    image={{ src: genAIHeroImage, alt: 'Generative AI Animation' }}
+  />
 
   <!-- Features Widget -->
   <Features
@@ -79,6 +77,10 @@ const metadata = {
         description: 'Custom agents handle complex tasks with human oversight, increasing efficiency and reducing manual work.',
       },
     ]}
+    image={{
+      src: '/AI_Assistant.json',
+      alt: 'AI Assistant Animation',
+    }}
   >
     <Fragment slot="content">
       Generative AI transforms how businesses interact with data and automate processes, creating intelligent systems that learn and adapt to your specific needs.
