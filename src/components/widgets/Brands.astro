@@ -27,32 +27,19 @@ const {
   </div>
 
   <!-- Three.js Script -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.166.1/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.166.1/examples/jsm/"
-      }
-    }
-  </script>
-  <script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  <script is:inline type="module">
+    const THREE = await import('https://unpkg.com/three@0.166.1/build/three.module.js');
 
     let logoCloudInitialized = false;
     let logoRenderer = null;
     let logoScene = null;
-    let logoControls = null;
     let logoAnimationId = null;
+    let logoCloud = null;
 
     function cleanupLogoCloud() {
       if (logoAnimationId) {
         cancelAnimationFrame(logoAnimationId);
         logoAnimationId = null;
-      }
-      if (logoControls) {
-        logoControls.dispose();
-        logoControls = null;
       }
       if (logoRenderer) {
         logoRenderer.dispose();
@@ -62,16 +49,16 @@ const {
         logoScene.clear();
         logoScene = null;
       }
+      logoCloud = null;
       logoCloudInitialized = false;
     }
 
     function initLogoCloud() {
       const container = document.getElementById('logo-cloud-container');
       const canvas = document.getElementById('logo-cloud-canvas');
-      
+
       if (!container || !canvas) return;
 
-      // Clean up any existing instance
       cleanupLogoCloud();
       logoCloudInitialized = true;
 
@@ -81,22 +68,12 @@ const {
       logoRenderer = new THREE.WebGLRenderer({
         canvas: canvas,
         antialias: true,
-        alpha: true 
+        alpha: true
       });
       logoRenderer.setSize(container.clientWidth, container.clientHeight);
       logoRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // 2. INITIALIZE ORBIT CONTROLS
-      logoControls = new OrbitControls(camera, logoRenderer.domElement);
-      logoControls.enableDamping = true;
-      logoControls.dampingFactor = 0.05;
-      logoControls.minDistance = 5;
-      logoControls.maxDistance = 20;
-      logoControls.autoRotate = true;
-      logoControls.autoRotateSpeed = 1.5;
-      logoControls.enableZoom = false; // Disable zooming/scrolling
-
-      // 3. LOGO DATA
+      // 2. LOGO DATA
       const logos = [
         { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg' },
         { src: 'https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg' },
@@ -120,9 +97,10 @@ const {
         { src: 'https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg' }
       ];
 
-      // 4. CREATE THE LOGO CLOUD
-      const logoCloud = new THREE.Group();
+      // 3. CREATE THE LOGO CLOUD
+      logoCloud = new THREE.Group();
       const textureLoader = new THREE.TextureLoader();
+      textureLoader.crossOrigin = 'anonymous';
       const radius = 5;
       const totalLogos = logos.length;
       const phi = Math.PI * (Math.sqrt(5) - 1);
@@ -133,16 +111,20 @@ const {
         const theta = phi * i;
         const x = Math.cos(theta) * radiusAtY;
         const z = Math.sin(theta) * radiusAtY;
-        
+
         const geometry = new THREE.PlaneGeometry(1, 1);
         const material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, transparent: true });
         const mesh = new THREE.Mesh(geometry, material);
 
         textureLoader.load(logos[i].src, (texture) => {
-          if (!logoCloudInitialized) return; // Skip if component was cleaned up
+          if (!logoCloudInitialized) return;
           mesh.material.map = texture;
           const aspectRatio = texture.image.width / texture.image.height;
           mesh.scale.set(aspectRatio, 1, 1);
+          mesh.material.needsUpdate = true;
+        }, undefined, (error) => {
+          console.warn('Failed to load logo texture:', logos[i].src, error);
+          mesh.material.color = new THREE.Color(0xcccccc);
           mesh.material.needsUpdate = true;
         });
 
@@ -152,53 +134,43 @@ const {
       }
       logoScene.add(logoCloud);
 
-      // 5. SET CAMERA POSITION
-      camera.position.z = 5;
+      // 4. SET CAMERA POSITION
+      camera.position.z = 12;
 
-      // 6. ANIMATION LOOP
+      // 5. ANIMATION LOOP — auto-rotate group
       function animate() {
-        if (!logoCloudInitialized) return; // Stop animation if cleaned up
-        
+        if (!logoCloudInitialized) return;
         logoAnimationId = requestAnimationFrame(animate);
-        if (logoControls) logoControls.update();
+        if (logoCloud) logoCloud.rotation.y += 0.005;
         if (logoRenderer && logoScene) logoRenderer.render(logoScene, camera);
       }
       animate();
 
-      // 7. HANDLE WINDOW RESIZING
+      // 6. HANDLE WINDOW RESIZING
       function handleResize() {
         if (!logoRenderer || !logoCloudInitialized) return;
-        
         const width = container.clientWidth;
         const height = container.clientHeight;
-        
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         logoRenderer.setSize(width, height);
       }
 
       window.addEventListener('resize', handleResize);
-      
-      // Initial resize call
       handleResize();
     }
 
-    // Initialize logo cloud
-    function setupLogoInit() {
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initLogoCloud);
-      } else {
-        initLogoCloud();
-      }
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLogoCloud);
+    } else {
+      initLogoCloud();
     }
-
-    // Setup initial logo cloud
-    setupLogoInit();
 
     // Handle Astro View Transitions
     document.addEventListener('astro:before-swap', cleanupLogoCloud);
     document.addEventListener('astro:after-swap', () => {
-      setTimeout(initLogoCloud, 100); // Small delay to ensure DOM is ready
+      setTimeout(initLogoCloud, 100);
     });
   </script>
 </WidgetWrapper>
